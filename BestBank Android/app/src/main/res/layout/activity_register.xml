@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_main"
+    tools:context="com.bestbank.RegisterActivity">
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="13dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:id="@+id/Username"
+        android:hint="Username"
+        android:textColor="#cacaca"
+        android:textColorHint="#cacaca"
+        android:layout_above="@+id/Email"
+        android:background="@drawable/buttons_main"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp" />
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="13dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:id="@+id/Email"
+        android:hint="E-mail"
+        android:textColor="#cacaca"
+        android:textColorHint="#cacaca"
+        android:background="@drawable/buttons_main"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp" />
+
+    <EditText
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:padding="13dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:fontFamily="sans-serif"
+        android:id="@+id/Password"
+        android:hint="Password"
+        android:textColor="#cacaca"
+        android:textColorHint="#cacaca"
+        android:layout_below="@id/Email"
+        android:background="@drawable/buttons_main"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp" />
+
+    <Button
+        android:text="Register"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Password"
+        android:background="@drawable/login_button"
+        android:textColor="@color/buttonsText"
+        android:padding="11dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+        android:id="@+id/RegisterButton" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/RegisterButton"
+        android:gravity="center_horizontal"
+        android:padding="20dp">
+
+        <TextView
+            android:text="Already registered? "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#cacaca"
+            android:id="@+id/loginText" />
+
+        <TextView
+            android:text="Sign in!"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvLogin"
+            android:textColor="@color/buttons" />
+    </LinearLayout>
+
+</RelativeLayout>
