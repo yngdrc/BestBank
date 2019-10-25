@@ -62,7 +62,7 @@ public class LoginActivity extends Activity {
 //                                String twitter = jsonResponse.getString("twitter");
 //                                String fires = jsonResponse.getString("fires");
 //
-//                                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                                intent.putExtra("username", username);
 //                                intent.putExtra("profile_image", profile_image);
 //                                intent.putExtra("instagram", instagram);
@@ -70,8 +70,9 @@ public class LoginActivity extends Activity {
 //                                intent.putExtra("facebook", facebook);
 //                                intent.putExtra("twitter", twitter);
 //                                intent.putExtra("fires", fires);
-//                                LoginActivity.this.startActivity(intent);
-                                Toast.makeText(LoginActivity.this, "asd", Toast.LENGTH_SHORT).show();
+                                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                LoginActivity.this.startActivity(intent);
+                                //Toast.makeText(LoginActivity.this, "asd", Toast.LENGTH_SHORT).show();
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("Login Failed")
