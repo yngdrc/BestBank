@@ -10,7 +10,16 @@ require "connect.php";
 
 $username = $_POST['username'];
 $password = $_POST['password'];
-$sql = "SELECT * FROM `Temp` WHERE Username='$username' AND Password='$password'";
+
+$username = htmlentities($username, ENT_QUOTES, "UTF-8");
+$password = htmlentities($password, ENT_QUOTES, "UTF-8");
+
+$sql = sprintf(
+  "SELECT * FROM `Temp` WHERE Username='%s' AND Password='%s'",
+  mysqli_real_escape_string($conn, $username),
+  mysqli_real_escape_string($conn, $password)
+);
+
 $result = $conn->query($sql);
 $num_users = $result->num_rows;
 
