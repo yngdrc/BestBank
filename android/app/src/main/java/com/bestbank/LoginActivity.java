@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,13 +74,13 @@ public class LoginActivity extends Activity {
 //                                intent.putExtra("fires", fires);
                                 //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 LoginActivity.this.startActivity(intent);
-                                //Toast.makeText(LoginActivity.this, "asd", Toast.LENGTH_SHORT).show();
                             } else {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("Login Failed")
                                         .setNegativeButton("Retry", null)
                                         .create()
                                         .show();
+                                Toast.makeText(LoginActivity.this, "asd", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {

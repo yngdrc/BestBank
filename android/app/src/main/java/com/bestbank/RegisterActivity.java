@@ -27,8 +27,8 @@ public class RegisterActivity extends Activity {
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         final EditText Username =   findViewById(R.id.Username);
-        final EditText Email = findViewById(R.id.Email);
-        final EditText Password = findViewById(R.id.Password);
+        final EditText Password1 = findViewById(R.id.Password1);
+        final EditText Password2 = findViewById(R.id.Password2);
 
         final Button RegisterButton = findViewById(R.id.RegisterButton);
         final TextView tvLogin = findViewById(R.id.tvLogin);
@@ -37,8 +37,8 @@ public class RegisterActivity extends Activity {
             @Override
             public void onClick(View view) {
                 final String username = Username.getText().toString();
-                final String email = Email.getText().toString();
-                final String password = Password.getText().toString();
+                final String email = Password1.getText().toString();
+                final String password = Password2.getText().toString();
 
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
