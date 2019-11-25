@@ -15,8 +15,8 @@ if (!isset($_SESSION['logged'])) {
 <body>
   <div id="container">
 <?php
-echo 'Welcome '.$_SESSION['username'].'! [<a href="logout.php">log out</a>]<br>';
-echo 'Balance: $'.$_SESSION['balance'].'<br>';
+echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';
+// TODO: echo 'Balance: $'.$_SESSION['Balance'].'<br>';
 ?>
   </div>
 </body>

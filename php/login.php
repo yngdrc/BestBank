@@ -1,20 +1,20 @@
 <?php
 session_start();
 
-if ((!isset($_POST['username']) || (!isset($_POST['password'])))) {
+if ((!isset($_POST['UserName']) || (!isset($_POST['Password'])))) {
   header('Location: index.php');
   exit();
 }
 
 require "connect.php";
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+$username = $_POST['UserName'];
+$password = $_POST['Password'];
 
 $username = htmlentities($username, ENT_QUOTES, "UTF-8");
 
 $sql = sprintf(
-  "SELECT * FROM `Temp` WHERE Username='%s'",
+  "SELECT * FROM `Customers` WHERE UserName='%s'",
   mysqli_real_escape_string($conn, $username)
 );
 
@@ -23,12 +23,20 @@ $num_users = $result->num_rows;
 
 if ($num_users > 0) {
   $row = $result->fetch_assoc();
-
-  if (password_verify($password, $row['Password'])) {
+  if ($password === $row['UserPassword']) { // (password_verify($password, $row['UserPassword']))
     $_SESSION['logged'] = true;
-    // $_SESSION['id'] = $row['Id'];
-    $_SESSION['username'] = $row['Username'];
-    $_SESSION['balance'] = $row['Balance'];
+    $_SESSION['IdentityNumber'] = $row['IdentityNumber'];
+    $_SESSION['Email'] = $row['Email'];
+    $_SESSION['LastName'] = $row['LastName'];
+    $_SESSION['FirstName'] = $row['FirstName'];
+    $_SESSION['BirthDate'] = $row['BirthDate'];
+    $_SESSION['AreaCode'] = $row['AreaCode'];
+    $_SESSION['PhoneNumber'] = $row['PhoneNumber'];
+    $_SESSION['TitleOfCourtesy'] = $row['TitleOfCourtesy'];
+    $_SESSION['UserName'] = $row['UserName'];
+    $_SESSION['RegisterDate'] = $row['RegisterDate'];
+    $_SESSION['ProfileStatus'] = $row['ProfileStatus'];
+    // TODO: $_SESSION['Balance'] = $row['Balance'];
 
     unset($_SESSION['error']);
     $result->close();

@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-if (isset($_SESSION['f_username'])) unset($_SESSION['f_username']);
-if (isset($_SESSION['e_username'])) unset($_SESSION['e_username']);
-if (isset($_SESSION['e_password'])) unset($_SESSION['e_password']);
+// if (isset($_SESSION['f_username'])) unset($_SESSION['f_username']);
+// if (isset($_SESSION['e_username'])) unset($_SESSION['e_username']);
+// if (isset($_SESSION['e_password'])) unset($_SESSION['e_password']);
 
 if ((isset($_SESSION['logged'])) && ($_SESSION['logged'] == true)) {
   header('Location: welcome.php');
@@ -25,8 +25,8 @@ if ((isset($_SESSION['logged'])) && ($_SESSION['logged'] == true)) {
     }
     ?>
     <form action="login.php" method="post">
-      <input type="text" placeholder="Username" name="username"><br>
-      <input type="password" placeholder="Password" name="password"><br>
+      <input type="text" placeholder="UserName" name="UserName"><br>
+      <input type="password" placeholder="Password" name="Password"><br>
       <button type="submit">Login</button>
     </form>
     <?php if (isset($_SESSION['error'])) echo $_SESSION['error']; ?>
