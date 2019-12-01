@@ -8,10 +8,8 @@ if ((!isset($_POST['UserName']) || (!isset($_POST['Password'])))) {
 
 require "connect.php";
 
-$username = $_POST['UserName'];
+$username = htmlentities($_POST['UserName'], ENT_QUOTES, "UTF-8");
 $password = $_POST['Password'];
-
-$username = htmlentities($username, ENT_QUOTES, "UTF-8");
 
 $sql = sprintf(
   "SELECT * FROM `Customers` WHERE UserName='%s'",
@@ -23,8 +21,8 @@ $num_users = $result->num_rows;
 
 if ($num_users > 0) {
   $row = $result->fetch_assoc();
-  if ($password === $row['UserPassword']) { // (password_verify($password, $row['UserPassword']))
-    $_SESSION['logged'] = true;
+  if (password_verify($password, $row['UserPassword'])) {
+    $_SESSION['Logged'] = true;
     $_SESSION['IdentityNumber'] = $row['IdentityNumber'];
     $_SESSION['Email'] = $row['Email'];
     $_SESSION['LastName'] = $row['LastName'];
@@ -38,15 +36,15 @@ if ($num_users > 0) {
     $_SESSION['ProfileStatus'] = $row['ProfileStatus'];
     // TODO: $_SESSION['Balance'] = $row['Balance'];
 
-    unset($_SESSION['error']);
+    unset($_SESSION['LoginError']);
     $result->close();
     header('Location: welcome.php');
   } else {
-    $_SESSION['error'] = 'Authentication failed. You entered an incorrect username or password.';
+    $_SESSION['LoginError'] = 'Authentication failed. You entered an incorrect username or password.';
     header('Location: index.php');
   }
 } else {
-  $_SESSION['error'] = 'Authentication failed. You entered an incorrect username or password.';
+  $_SESSION['LoginError'] = 'Authentication failed. You entered an incorrect username or password.';
   header('Location: index.php');
 }
 

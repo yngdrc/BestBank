@@ -1,8 +1,6 @@
 <?php
 session_start();
 
-echo $_SESSION['tmp'] . '<br>';
-
 if(isset($_POST['IdentityNumber'])) {
   $ok = true;
 
@@ -15,29 +13,71 @@ if(isset($_POST['IdentityNumber'])) {
   $PhoneNumber = $_POST['PhoneNumber'];
   $TitleOfCourtesy = $_POST['TitleOfCourtesy'];
 
-  $UserName = strtolower(substr($FirstName,0,3).substr($LastName,0,3)).'0000';
-  $RegisterDate = date('Y-m-d');
-  $ProfileStatus = "Active";
+  if (preg_match('/^[0-9]+$/', $IdentityNumber) !== 1) {
+    $ok = false;
+    $_SESSION['RFE_IdentityNumber'] = 'Invalid IdentityNumber';
+  }
 
-  // $username = $_POST['username'];
-  // if (strlen($username) < 3) { $ok = false; $_SESSION['e_username'] = 'Username: use at least 3 characters'; }
-  // if (strlen($username) > 16) { $ok = false; $_SESSION['e_username'] = 'Username: use maximum 16 characters'; }
-  // if (ctype_alnum($username) == false) { $ok = false; $_SESSION['e_username'] = 'Username: you can only use letters and numbers'; }
+  if (preg_match('/^.+@[a-z]+\\.[a-z]+$/', $Email) !== 1) {
+    $ok = false;
+    $_SESSION['RFE_Email'] = 'Invalid Email';
+  }
+
+  if (preg_match('/^[A-Z]/', $LastName) !== 1 ||
+      preg_match('/^.[a-z[:space:]]{2,}$/', $LastName) !== 1) {
+    $ok = false;
+    $_SESSION['RFE_LastName'] = 'Invalid LastName';
+  }
+
+  if (preg_match('/^[A-Z]/', $FirstName) !== 1 ||
+      preg_match('/^.[a-z[:space:]]{2,}$/', $FirstName) !== 1) {
+    $ok = false;
+    $_SESSION['RFE_FirstName'] = 'Invalid FirstName';
+  }
+
+  if (preg_match('/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/', $BirthDate) !== 1) {
+    $ok = false;
+    $_SESSION['RFE_BirthDate'] = 'Invalid BirthDate (yyyy-mm-dd)';
+  }
+
+  if (preg_match('/^\\+?[0-9]+$/', $AreaCode) !== 1) {
+    $ok = false;
+    $_SESSION['RFE_AreaCode'] = 'Invalid AreaCode';
+  }
+
+  if (preg_match('/^[0-9]+$/', $PhoneNumber) !== 1) {
+    $ok = false;
+    $_SESSION['RFE_PhoneNumber'] = 'Invalid PhoneNumber';
+  }
+
+  if ($TitleOfCourtesy !== 'Mr.' && $TitleOfCourtesy !== 'Mrs.') {
+    $ok = false;
+    $_SESSION['RFE_TitleOfCourtesy'] = 'Invalid TitleOfCourtesy (Mr. / Mrs.)';
+  }
 
   $password1 = $_POST['Password1'];
   $password2 = $_POST['Password2'];
-  if (strlen($password1) < 4) { $ok = false; $_SESSION['e_password'] = 'Password: use at least 4 characters'; }
-  if ($password1 != $password2) { $ok = false; $_SESSION['e_password'] = 'Passwords do not match'; }
-  $password = $password1; // $password = password_hash($password1, PASSWORD_DEFAULT);
 
-  $_SESSION['f_IdentityNumber'] = $IdentityNumber;
-  $_SESSION['f_Email'] = $Email;
-  $_SESSION['f_LastName'] = $LastName;
-  $_SESSION['f_FirstName'] = $FirstName;
-  $_SESSION['f_BirthDate'] = $BirthDate;
-  $_SESSION['f_AreaCode'] = $AreaCode;
-  $_SESSION['f_PhoneNumber'] = $PhoneNumber;
-  $_SESSION['f_TitleOfCourtesy'] = $TitleOfCourtesy;
+  if (strlen($password1) < 4) {
+    $ok = false;
+    $_SESSION['RFE_Password'] = 'Password: use at least 4 characters';
+  }
+
+  if ($password1 !== $password2) {
+    $ok = false;
+    $_SESSION['RFE_Password'] = 'Passwords do not match';
+  }
+
+  $password = password_hash($password1, PASSWORD_DEFAULT);
+
+  $_SESSION['RF_IdentityNumber'] = $IdentityNumber;
+  $_SESSION['RF_Email'] = $Email;
+  $_SESSION['RF_LastName'] = $LastName;
+  $_SESSION['RF_FirstName'] = $FirstName;
+  $_SESSION['RF_BirthDate'] = $BirthDate;
+  $_SESSION['RF_AreaCode'] = $AreaCode;
+  $_SESSION['RF_PhoneNumber'] = $PhoneNumber;
+  $_SESSION['RF_TitleOfCourtesy'] = $TitleOfCourtesy;
 
   require "connect.php";
 
@@ -47,8 +87,30 @@ if(isset($_POST['IdentityNumber'])) {
 
   if ($num_users > 0) {
     $ok = false;
-    $_SESSION['e_IdentityNumber'] = 'This identity number is already registered';
+    $_SESSION['RFE_IdentityNumber'] = 'This IdentityNumber is already registered';
   }
+
+  $sql = sprintf("SELECT * FROM `Customers` WHERE Email='%s'", mysqli_real_escape_string($conn, $Email));
+  $result = $conn->query($sql);
+  $num_emails = $result->num_rows;
+
+  if ($num_emails > 0) {
+    $ok = false;
+    $_SESSION['RFE_Email'] = 'This Email is taken';
+  }
+
+  $UserNameBeginning = strtolower(substr($FirstName,0,3).substr($LastName,0,3));
+  $sql = sprintf(
+    "SELECT * FROM `Customers` WHERE UserName LIKE '%s",
+    mysqli_real_escape_string($conn, $UserNameBeginning)
+  )."%'";
+  $result = $conn->query($sql);
+  $num_users = $result->num_rows;
+  $UserNameEnd = str_pad($num_users + 1, 4 , '0' , STR_PAD_LEFT);
+
+  $UserName = $UserNameBeginning . $UserNameEnd;
+  $RegisterDate = date('Y-m-d');
+  $ProfileStatus = "Active";
 
   if ($ok == true) {
     $sql = sprintf(
@@ -69,12 +131,26 @@ if(isset($_POST['IdentityNumber'])) {
 
     $result = $conn->query($sql);
     if ($result) {
-      $_SESSION['register_ok'] = true;
+      $_SESSION['Register_UserName'] = $UserName;
       header('Location: index.php');
     }
   }
 
   $conn->close();
+}
+
+function input_value($key) {
+  if (isset($_SESSION[$key])) {
+    echo $_SESSION[$key];
+    unset($_SESSION[$key]);
+  }
+}
+
+function error_msg($key) {
+  if (isset($_SESSION[$key])) {
+    echo $_SESSION[$key].'<br>';
+    unset($_SESSION[$key]);
+  }
 }
 ?>
 
@@ -87,69 +163,41 @@ if(isset($_POST['IdentityNumber'])) {
   <div id="container">
     <form method="post">
       <input type="text" placeholder="IdentityNumber" name="IdentityNumber" value="<?php
-        if (isset($_SESSION['f_IdentityNumber'])) {
-          echo $_SESSION['f_IdentityNumber'];
-          unset($_SESSION['f_IdentityNumber']);
-        }
-      ?>" autocomplete="off"><br>
+        input_value('RF_IdentityNumber'); ?>" autocomplete="off"><br>
+      <?php error_msg('RFE_IdentityNumber'); ?>
 
       <input type="text" placeholder="Email" name="Email" value="<?php
-        if (isset($_SESSION['f_Email'])) {
-          echo $_SESSION['f_Email'];
-          unset($_SESSION['f_Email']);
-        }
+        input_value('RF_Email');
       ?>" autocomplete="off"><br>
+      <?php error_msg('RFE_Email'); ?>
 
       <input type="text" placeholder="FirstName" name="FirstName" value="<?php
-        if (isset($_SESSION['f_FirstName'])) {
-          echo $_SESSION['f_FirstName'];
-          unset($_SESSION['f_FirstName']);
-        }
-      ?>" autocomplete="off"><br>
+        input_value('RF_FirstName'); ?>" autocomplete="off"><br>
+      <?php error_msg('RFE_FirstName'); ?>
 
       <input type="text" placeholder="LastName" name="LastName" value="<?php
-        if (isset($_SESSION['f_LastName'])) {
-          echo $_SESSION['f_LastName'];
-          unset($_SESSION['f_LastName']);
-        }
-      ?>" autocomplete="off"><br>
+        input_value('RF_LastName'); ?>" autocomplete="off"><br>
+      <?php error_msg('RFE_LastName'); ?>
 
       <input type="text" placeholder="BirthDate" name="BirthDate" value="<?php
-        if (isset($_SESSION['f_BirthDate'])) {
-          echo $_SESSION['f_BirthDate'];
-          unset($_SESSION['f_BirthDate']);
-        }
-      ?>" autocomplete="off"><br>
+        input_value('RF_BirthDate'); ?>" autocomplete="off"><br>
+      <?php error_msg('RFE_BirthDate'); ?>
 
       <input type="text" placeholder="AreaCode" name="AreaCode" value="<?php
-        if (isset($_SESSION['f_AreaCode'])) {
-          echo $_SESSION['f_AreaCode'];
-          unset($_SESSION['f_AreaCode']);
-        }
-      ?>" autocomplete="off"><br>
+        input_value('RF_AreaCode'); ?>" autocomplete="off"><br>
+      <?php error_msg('RFE_AreaCode'); ?>
 
       <input type="text" placeholder="PhoneNumber" name="PhoneNumber" value="<?php
-        if (isset($_SESSION['f_PhoneNumber'])) {
-          echo $_SESSION['f_PhoneNumber'];
-          unset($_SESSION['f_PhoneNumber']);
-        }
-      ?>" autocomplete="off"><br>
+        input_value('RF_PhoneNumber'); ?>" autocomplete="off"><br>
+      <?php error_msg('RFE_PhoneNumber'); ?>
 
       <input type="text" placeholder="TitleOfCourtesy" name="TitleOfCourtesy" value="<?php
-        if (isset($_SESSION['f_TitleOfCourtesy'])) {
-          echo $_SESSION['f_TitleOfCourtesy'];
-          unset($_SESSION['f_TitleOfCourtesy']);
-        }
-      ?>" autocomplete="off"><br>
+        input_value('RF_TitleOfCourtesy'); ?>" autocomplete="off"><br>
+      <?php error_msg('RFE_TitleOfCourtesy'); ?>
 
       <input type="password" placeholder="Password" name="Password1"><br>
       <input type="password" placeholder="Confirm password" name="Password2"><br>
-      <?php
-      if (isset($_SESSION['e_password'])) {
-        echo $_SESSION['e_password'].'<br>';
-        unset($_SESSION['e_password']);
-      }
-      ?>
+      <?php error_msg('RFE_Password'); ?>
       <button type="submit">Register</button>
     </form>
   </div>
