@@ -9,6 +9,15 @@ a {
   color: #8888dd;
 }
 
+table {
+  border-collapse: collapse;
+  margin: 0px auto;
+}
+
+td, th {
+  border: 1px solid #555555;
+}
+
 #container {
   background-color: #222222;
   padding: 80px 0;

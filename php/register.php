@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if(isset($_POST['IdentityNumber'])) {
+if (isset($_POST['IdentityNumber'])) {
   $ok = true;
 
   $IdentityNumber = $_POST['IdentityNumber'];
@@ -79,7 +79,7 @@ if(isset($_POST['IdentityNumber'])) {
   $_SESSION['RF_PhoneNumber'] = $PhoneNumber;
   $_SESSION['RF_TitleOfCourtesy'] = $TitleOfCourtesy;
 
-  require "connect.php";
+  require 'connect.php';
 
   $sql = sprintf("SELECT * FROM `Customers` WHERE IdentityNumber='%s'", mysqli_real_escape_string($conn, $IdentityNumber));
   $result = $conn->query($sql);
@@ -110,7 +110,7 @@ if(isset($_POST['IdentityNumber'])) {
 
   $UserName = $UserNameBeginning . $UserNameEnd;
   $RegisterDate = date('Y-m-d');
-  $ProfileStatus = "Active";
+  $ProfileStatus = 'Active';
 
   if ($ok == true) {
     $sql = sprintf(

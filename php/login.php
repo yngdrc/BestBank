@@ -6,7 +6,7 @@ if ((!isset($_POST['UserName']) || (!isset($_POST['Password'])))) {
   exit();
 }
 
-require "connect.php";
+require 'connect.php';
 
 $username = htmlentities($_POST['UserName'], ENT_QUOTES, "UTF-8");
 $password = $_POST['Password'];
@@ -34,7 +34,6 @@ if ($num_users > 0) {
     $_SESSION['UserName'] = $row['UserName'];
     $_SESSION['RegisterDate'] = $row['RegisterDate'];
     $_SESSION['ProfileStatus'] = $row['ProfileStatus'];
-    // TODO: $_SESSION['Balance'] = $row['Balance'];
 
     unset($_SESSION['LoginError']);
     $result->close();
