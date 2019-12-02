@@ -5,6 +5,9 @@ if (!isset($_SESSION['Logged'])) {
   header('Location: index.php');
   exit();
 }
+
+require 'connect.php';
+require 'base.php';
 ?>
 
 <!DOCTYPE html>
@@ -18,9 +21,10 @@ if (!isset($_SESSION['Logged'])) {
       echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';
     ?></div>
 
-    <?php
-    require 'connect.php';
+    <?php session_msg('TransactionInfo'); ?>
+    <?php session_msg('TransactionError'); ?>
 
+    <?php
     $sql = sprintf(
       "SELECT * FROM `Accounts` WHERE IdentityNumber='%s'",
       mysqli_real_escape_string($conn, $_SESSION['IdentityNumber'])
@@ -56,7 +60,8 @@ if (!isset($_SESSION['Logged'])) {
     }
     ?>
 
-    <a href="add_account.php">Add account</a>
+    <a href="add_account.php">Add account</a><br>
+    <a href="transaction.php">Transaction</a><br>
   </div>
 </body>
 </html>

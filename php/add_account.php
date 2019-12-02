@@ -19,7 +19,7 @@ function randomNumber($length=26) {
 }
 
 if (isset($_POST['AccountType'])) {
-  $AccountNumber =  randomNumber(2) . '12345678' . randomNumber(16);
+  $AccountNumber = randomNumber(2) . '12345678' . randomNumber(16);
   $AccountType = $_POST['AccountType'];
   $IdentityNumber = $_SESSION['IdentityNumber'];
   $AccountName = $_POST['AccountName'];
@@ -38,8 +38,6 @@ if (isset($_POST['AccountType'])) {
     mysqli_real_escape_string($conn, $AccountStatus)
   );
 
-  $_SESSION['tmp'] = $sql;
-
   $result = $conn->query($sql);
   if ($result) {
     header('Location: welcome.php');
@@ -55,8 +53,6 @@ if (isset($_POST['AccountType'])) {
 </head>
 <body>
   <div id="container">
-    <?php echo $_SESSION['tmp'].'<br>'; ?>
-
     <div><?php
       echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';
     ?></div>

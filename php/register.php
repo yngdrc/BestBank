@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require 'base.php';
+
 if (isset($_POST['IdentityNumber'])) {
   $ok = true;
 
@@ -138,20 +140,6 @@ if (isset($_POST['IdentityNumber'])) {
 
   $conn->close();
 }
-
-function input_value($key) {
-  if (isset($_SESSION[$key])) {
-    echo $_SESSION[$key];
-    unset($_SESSION[$key]);
-  }
-}
-
-function error_msg($key) {
-  if (isset($_SESSION[$key])) {
-    echo $_SESSION[$key].'<br>';
-    unset($_SESSION[$key]);
-  }
-}
 ?>
 
 <!DOCTYPE html>
@@ -164,40 +152,40 @@ function error_msg($key) {
     <form method="post">
       <input type="text" placeholder="IdentityNumber" name="IdentityNumber" value="<?php
         input_value('RF_IdentityNumber'); ?>" autocomplete="off"><br>
-      <?php error_msg('RFE_IdentityNumber'); ?>
+      <?php session_msg('RFE_IdentityNumber'); ?>
 
       <input type="text" placeholder="Email" name="Email" value="<?php
         input_value('RF_Email');
       ?>" autocomplete="off"><br>
-      <?php error_msg('RFE_Email'); ?>
+      <?php session_msg('RFE_Email'); ?>
 
       <input type="text" placeholder="FirstName" name="FirstName" value="<?php
         input_value('RF_FirstName'); ?>" autocomplete="off"><br>
-      <?php error_msg('RFE_FirstName'); ?>
+      <?php session_msg('RFE_FirstName'); ?>
 
       <input type="text" placeholder="LastName" name="LastName" value="<?php
         input_value('RF_LastName'); ?>" autocomplete="off"><br>
-      <?php error_msg('RFE_LastName'); ?>
+      <?php session_msg('RFE_LastName'); ?>
 
       <input type="text" placeholder="BirthDate" name="BirthDate" value="<?php
         input_value('RF_BirthDate'); ?>" autocomplete="off"><br>
-      <?php error_msg('RFE_BirthDate'); ?>
+      <?php session_msg('RFE_BirthDate'); ?>
 
       <input type="text" placeholder="AreaCode" name="AreaCode" value="<?php
         input_value('RF_AreaCode'); ?>" autocomplete="off"><br>
-      <?php error_msg('RFE_AreaCode'); ?>
+      <?php session_msg('RFE_AreaCode'); ?>
 
       <input type="text" placeholder="PhoneNumber" name="PhoneNumber" value="<?php
         input_value('RF_PhoneNumber'); ?>" autocomplete="off"><br>
-      <?php error_msg('RFE_PhoneNumber'); ?>
+      <?php session_msg('RFE_PhoneNumber'); ?>
 
       <input type="text" placeholder="TitleOfCourtesy" name="TitleOfCourtesy" value="<?php
         input_value('RF_TitleOfCourtesy'); ?>" autocomplete="off"><br>
-      <?php error_msg('RFE_TitleOfCourtesy'); ?>
+      <?php session_msg('RFE_TitleOfCourtesy'); ?>
 
       <input type="password" placeholder="Password" name="Password1"><br>
       <input type="password" placeholder="Confirm password" name="Password2"><br>
-      <?php error_msg('RFE_Password'); ?>
+      <?php session_msg('RFE_Password'); ?>
       <button type="submit">Register</button>
     </form>
   </div>
