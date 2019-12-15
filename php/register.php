@@ -179,8 +179,8 @@ if (isset($_POST['IdentityNumber'])) {
         input_value('RF_PhoneNumber'); ?>" autocomplete="off"><br>
       <?php session_msg('RFE_PhoneNumber'); ?>
 
-      <input type="text" placeholder="TitleOfCourtesy" name="TitleOfCourtesy" value="<?php
-        input_value('RF_TitleOfCourtesy'); ?>" autocomplete="off"><br>
+      <input type="radio" name="TitleOfCourtesy" value="Mr."> Mr.<br>
+      <input type="radio" name="TitleOfCourtesy" value="Mrs."> Mrs.<br>
       <?php session_msg('RFE_TitleOfCourtesy'); ?>
 
       <input type="password" placeholder="Password" name="Password1"><br>
