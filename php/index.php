@@ -1,10 +1,12 @@
 <?php
 session_start();
 
-if ((isset($_SESSION['Logged'])) && ($_SESSION['Logged'] == true)) {
+if (isset($_SESSION['Logged'])) {
   header('Location: welcome.php');
   exit();
 }
+
+require 'base.php'
 ?>
 
 <!DOCTYPE html>
@@ -13,6 +15,7 @@ if ((isset($_SESSION['Logged'])) && ($_SESSION['Logged'] == true)) {
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="top"><a href="/">BestBank</a></div>
   <div id="container">
     <?php
     if (isset($_SESSION['Register_UserName'])) {
@@ -26,7 +29,7 @@ if ((isset($_SESSION['Logged'])) && ($_SESSION['Logged'] == true)) {
       <input type="password" placeholder="Password" name="Password"><br>
       <button type="submit">Login</button>
     </form>
-    <?php if (isset($_SESSION['LoginError'])) echo '<br>'.$_SESSION['LoginError']; ?>
+    <?php session_msg('LoginError'); ?>
     <a href="register.php">Create account</a>
   </div>
 </body>

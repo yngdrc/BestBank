@@ -80,6 +80,7 @@ if (isset($_POST['PayerAccountNumber'])) {
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="top"><a href="/">BestBank</a></div>
   <div id="container">
     <div><?php
       echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';

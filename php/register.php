@@ -148,6 +148,7 @@ if (isset($_POST['IdentityNumber'])) {
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="top"><a href="/">BestBank</a></div>
   <div id="container">
     <form method="post">
       <input type="text" placeholder="IdentityNumber" name="IdentityNumber" value="<?php
@@ -179,8 +180,10 @@ if (isset($_POST['IdentityNumber'])) {
         input_value('RF_PhoneNumber'); ?>" autocomplete="off"><br>
       <?php session_msg('RFE_PhoneNumber'); ?>
 
-      <input type="radio" name="TitleOfCourtesy" value="Mr."> Mr.<br>
-      <input type="radio" name="TitleOfCourtesy" value="Mrs."> Mrs.<br>
+      <input type="radio" name="TitleOfCourtesy" value="Mr." id="Mr.">
+      <label for="Mr.">Mr.</label> |
+      <input type="radio" name="TitleOfCourtesy" value="Mrs." id="Mrs.">
+      <label for="Mrs.">Mrs.</label><br>
       <?php session_msg('RFE_TitleOfCourtesy'); ?>
 
       <input type="password" placeholder="Password" name="Password1"><br>
