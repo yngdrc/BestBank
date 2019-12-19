@@ -103,7 +103,7 @@ public class LoginActivity extends Activity {
                                     String accountDetails = jsonResponse.getString("accountDetails"+x);
                                     JSONObject jsonObject = new JSONObject(accountDetails);
                                     int balance = jsonObject.getInt("balance"+x);
-                                    int accountNumber = jsonObject.getInt("accountNumber"+x);
+                                    Long accountNumber = jsonObject.getLong("accountNumber"+x);
                                     String accountType = jsonObject.getString("accountType"+x);
                                     String accountName = jsonObject.getString("accountName"+x);
                                     edit.putString("balance"+x, String.valueOf(balance));

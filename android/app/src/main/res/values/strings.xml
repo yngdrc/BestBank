@@ -24,5 +24,10 @@
     <string name="text_login">Login</string>
     <string name="mr">Mr.</string>
     <string name="mrs">Mrs.</string>
+    <string name="account_details">Account details</string>
+    <string name="account_name">Account name:</string>
+    <string name="account_type">Account type:</string>
+    <string name="account_number">Account number:</string>
+    <string name="lastSuccessfulLogin">Last successful login:</string>
 
 </resources>

@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/etPassword"
         android:background="@drawable/login_button"
-        android:textColor="@color/buttonsText"
+        android:textColor="#ffffff"
         android:padding="11dp"
         android:textSize="14sp"
         android:layout_centerInParent="true"

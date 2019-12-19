@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "672460496542",
+    "firebase_url": "https://bestbank-project.firebaseio.com",
+    "project_id": "bestbank-project",
+    "storage_bucket": "bestbank-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:672460496542:android:74714d90a978d967e7e58f",
+        "android_client_info": {
+          "package_name": "com.bestbank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "672460496542-vnefa4ao76fv0ktl9u0vuqrp1vlu2lob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0rIEr8qbHP0sko8gGQfCyirW10U39R00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "672460496542-vnefa4ao76fv0ktl9u0vuqrp1vlu2lob.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
