@@ -22,60 +22,178 @@
 
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.2"/>
+            android:layout_height="0dp"
+            android:id="@+id/spaceRegister"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:padding="13dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:id="@+id/Username"
-        android:hint="Username (4-15 characters)"
-        android:textColor="#cacaca"
-        android:textColorHint="#cacaca"
-        android:background="@drawable/buttons_main"
-        android:layout_marginTop="10dp"
-        android:textSize="14sp" />
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            android:ems="10"
+            android:inputType="numberSigned"
+            android:id="@+id/identityNumber_reg"
+            android:hint="@string/identity_number"
+            android:textColor="#cacaca"
+            android:textColorHint="#cacaca"
+            android:background="@drawable/buttons_main"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp" />
 
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:padding="13dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:fontFamily="sans-serif"
-        android:id="@+id/Password1"
-        android:hint="Password"
-        android:textColor="#cacaca"
-        android:textColorHint="#cacaca"
-        android:background="@drawable/buttons_main"
-        android:layout_marginTop="10dp"
-        android:textSize="14sp"/>
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:fontFamily="sans-serif"
+            android:id="@+id/email_reg"
+            android:hint="@string/email"
+            android:textColor="#cacaca"
+            android:textColorHint="#cacaca"
+            android:background="@drawable/buttons_main"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"/>
 
-    <EditText
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:padding="13dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:fontFamily="sans-serif"
-        android:id="@+id/Password2"
-        android:hint="Confirm password"
-        android:textColor="#cacaca"
-        android:textColorHint="#cacaca"
-        android:background="@drawable/buttons_main"
-        android:layout_marginTop="10dp"
-        android:textSize="14sp" />
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            android:ems="10"
+            android:inputType="text"
+            android:fontFamily="sans-serif"
+            android:id="@+id/firstName_reg"
+            android:hint="@string/first_name"
+            android:textColor="#cacaca"
+            android:textColorHint="#cacaca"
+            android:background="@drawable/buttons_main"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            android:ems="10"
+            android:inputType="text"
+            android:fontFamily="sans-serif"
+            android:id="@+id/lastName_reg"
+            android:hint="@string/last_name"
+            android:textColor="#cacaca"
+            android:textColorHint="#cacaca"
+            android:background="@drawable/buttons_main"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            android:ems="10"
+            android:inputType="datetime"
+            android:fontFamily="sans-serif"
+            android:id="@+id/birthDate_reg"
+            android:hint="@string/birth_date"
+            android:textColor="#cacaca"
+            android:textColorHint="#cacaca"
+            android:background="@drawable/buttons_main"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            android:ems="10"
+            android:inputType="text"
+            android:fontFamily="sans-serif"
+            android:id="@+id/areaCode_reg"
+            android:hint="@string/area_code"
+            android:textColor="#cacaca"
+            android:textColorHint="#cacaca"
+            android:background="@drawable/buttons_main"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            android:ems="10"
+            android:inputType="phone"
+            android:fontFamily="sans-serif"
+            android:id="@+id/phoneNumber_reg"
+            android:hint="@string/phone_number"
+            android:textColor="#cacaca"
+            android:textColorHint="#cacaca"
+            android:background="@drawable/buttons_main"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:weightSum="2">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:background="@drawable/toc_button"
+                android:text="@string/mr"
+                android:layout_weight="1"/>
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:background="@drawable/toc_button"
+                android:text="@string/mrs"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:fontFamily="sans-serif"
+            android:id="@+id/password_reg"
+            android:hint="@string/password"
+            android:textColor="#cacaca"
+            android:textColorHint="#cacaca"
+            android:background="@drawable/buttons_main"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp" />
+
+        <EditText
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:fontFamily="sans-serif"
+            android:id="@+id/confirmPassword_reg"
+            android:hint="@string/confirm_password"
+            android:textColor="#cacaca"
+            android:textColorHint="#cacaca"
+            android:background="@drawable/buttons_main"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp" />
 
     <Button
-        android:text="Register"
+        android:text="@string/text_register"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/login_button"

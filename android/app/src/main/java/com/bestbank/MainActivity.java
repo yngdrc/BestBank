@@ -1,5 +1,6 @@
 package com.bestbank;
 
+import android.content.pm.ActivityInfo;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         TabLayout mTabLayout = findViewById(R.id.tabLayout);
         TabItem overviewTab = findViewById(R.id.overviewTab);

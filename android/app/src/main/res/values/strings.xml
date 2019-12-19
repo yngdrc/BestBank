@@ -8,8 +8,21 @@
     <string name="tab_text_3">Tab 2</string>
     <string name="tab_text_4">Tab 2</string>
     <string name="tab_text_5">Tab 2</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="currency"><sup>$</sup></string>
+    
+    //Account details
+    <string name="identity_number">Identity Number</string>
+    <string name="email">Email</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="birth_date">Date of birth</string>
+    <string name="area_code">Area Code</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="text_register">Register</string>
+    <string name="text_login">Login</string>
+    <string name="mr">Mr.</string>
+    <string name="mrs">Mrs.</string>
 
 </resources>
