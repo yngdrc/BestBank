@@ -29,5 +29,7 @@
     <string name="account_type">Account type:</string>
     <string name="account_number">Account number:</string>
     <string name="lastSuccessfulLogin">Last successful login:</string>
+    <string name="default_notification_channel_id">bestbank_channel</string>
+    <string name="default_notification_channel_name">bestbank_channel</string>
 
 </resources>

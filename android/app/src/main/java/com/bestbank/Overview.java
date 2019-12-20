@@ -69,7 +69,7 @@ public class Overview extends Fragment {
         final TextView tv_accountNumber = root.findViewById(R.id.overview_accountNumber);
         tv_accountName.setText(getResources().getString(R.string.account_name) + " " + prefs.getString("accountName0", ""));
         tv_accountType.setText(getResources().getString(R.string.account_type) + " " + prefs.getString("accountType0", ""));
-        tv_accountNumber.setText(getResources().getString(R.string.account_number) + " " + prefs.getString("accountNumber0", ""));
+        tv_accountNumber.setText(getResources().getString(R.string.account_number) + " " + prefs.getString("token", ""));
 
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
