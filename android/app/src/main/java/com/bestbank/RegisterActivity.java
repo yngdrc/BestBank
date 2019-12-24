@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,8 +101,8 @@ public class RegisterActivity extends Activity {
                             Log.d("response", response);
                             JSONObject jsonResponse = new JSONObject(response);
                             boolean success = jsonResponse.getBoolean("success");
-                            String usrnm = jsonResponse.getString("username");
                             if(success){
+                                String usrnm = jsonResponse.getString("username");
                                 final SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", 0);
                                 final SharedPreferences.Editor edit = prefs.edit();
                                 edit.putString("username", usrnm);
@@ -109,11 +111,10 @@ public class RegisterActivity extends Activity {
                                 RegisterActivity.this.startActivity(intent);
                             }
                             else {
-                                AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                                builder.setMessage("Register Failed")
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
+                                Snackbar snackbar = Snackbar.make(root, "Couldn't create an account", Snackbar.LENGTH_LONG);
+                                snackbar.getView().setBackgroundColor(getColor(R.color.loginButton));
+                                snackbar.setActionTextColor(Color.WHITE);
+                                snackbar.setAction("Action", null).show();
                             }
 
                         } catch (JSONException e) {
