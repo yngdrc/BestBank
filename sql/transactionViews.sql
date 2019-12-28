@@ -157,11 +157,33 @@ create view Transactions_OnlyName as
 from Transactions 
 where (TransactionType = 'Transfer') and (PayerCity is not null) and (RecipientCity is null);
 
-/*c) Przelewy wewnętrzne - do ogarnięcia
+/*c) Przelewy wewnętrzne*/
 
 create view InternalTransactions as
-  ..*/
+  select
+  TransactionNumber,
 
+  PayerAccountNumber,
+  PayerName,
+  PayerStreet,
+  PayerStreetNumber,
+  PayerHouseOrFlatNo,
+  PayerPostalCode,
+  PayerCity,
+
+  RecipientAccountNumber,
+  RecipientName,
+  RecipientStreet,
+  RecipientStreetNumber,
+  RecipientHouseOrFlatNo,
+  RecipientPostalCode,
+  RecipientCity,
+    
+  TransactionTitle,
+  TransactionDate,
+  Amount
+  from Transactions 
+  where TransactionType like 'Internal transfer';
 /*
 Dla przelewów nie ma kierunku, gdyż wszystkie inne transakcje możemy podzielić a te nie.
 Przykładowo, ATM'y mozemy podzielic na interakcje kasa-konto/konto-kasa, wtedy zmieniaja
