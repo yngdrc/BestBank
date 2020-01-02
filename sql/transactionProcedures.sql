@@ -24,12 +24,12 @@ create view AdrAll_TypeOfAdress_AccNo as
 /*Procedury rejestru transakcji*/
 
 /*1. Imię i nazwisko odbiorcy*/
-use bestbank;
-create procedure registerTransaction(
+
+create procedure registerTransaction_byNameOnly(
   in transactionNumber char(18),
   in payerAccountNumber char(26),
   in recipientAccountNumber char(26),
-  
+
   in recipientLastName varchar(100),
   in recipientFirstName varchar(100),
 
@@ -151,14 +151,18 @@ begin
     if verificationResult is not null
     then
       /*dopiero po weryfikacji zgodności podanych informacji sprawdzamy dodatkowo, czy nadawca to jednoczesnie odbiorca*/
-      if (payerAccountNumber = recipientAccountNumber) and 
-         (payerLastName = recipientLastName) and 
-         (payerFirstName = recipientFirstName)
+      if verificationResult = (
+        select 
+        IdentityNumber 
+        from CustAll_AccNo 
+        where AccountNumber = payerAccountNumber
+      )
       then
         /*uzupełnienie danych odbiorcy*/
         set recipientEmail = payerEmail;
         set recipientAreaCode = payerAreaCode;
         set recipientPhoneNumber = payerPhoneNumber;
+
         set recipientStreet = payerStreet;
         set recipientStreetNumber = payerStreetNumber;
         set recipientHouseOrFlatNo = payerHouseOrFlatNo;
@@ -183,6 +187,7 @@ begin
           from CustAll_AccNo
           where AccountNumber = recipientAccountNumber
         );
+
         set recipientStreet = (
           select 
           Street
@@ -244,10 +249,8 @@ begin
         transactionDate,
         amount
       );
-      /*ew. tylko zmiana typu transakcji*/
-      if (payerAccountNumber = recipientAccountNumber) and 
-         (payerLastName = recipientLastName) and 
-         (payerFirstName = recipientFirstName)
+      /*dla transferu wewn., przeprowadzonego jako zwykłą transakcję*/
+      if recipientEmail = payerEmail
       then
         update Transactions
         set TransactionType = 'Internal transfer'
@@ -323,8 +326,270 @@ end;
 
 /*2. Imię, nazwisko i adres*/
 
-/*..*/
+create procedure registerTransaction_byFullData(
+  in transactionNumber char(18),
+  in payerAccountNumber char(26),
+  in recipientAccountNumber char(26),
+  
+  in recipientLastName varchar(100),
+  in recipientFirstName varchar(100),
+  in recipientStreet varchar(100),
+  in recipientStreetNumber varchar(5),
+  in recipientHouseOrFlatNo varchar(10),
+  in recipientPostalCode varchar(20),
+  in recipientCity varchar(100),
+
+  in transactionTitle varchar(100),
+  in transactionDate date,
+  in amount decimal(10, 0)
+)
+begin
+  declare payerLastName varchar(100);
+  declare payerFirstName varchar(100);
+  declare payerName varchar(200);
+
+  declare payerEmail varchar(100);
+  declare payerAreaCode varchar(20);
+  declare payerPhoneNumber varchar(30);
+
+  declare payerStreet varchar(100);
+  declare payerStreetNumber varchar(5);
+  declare payerHouseOrFlatNo varchar(10);
+  declare payerPostalCode varchar(20);
+  declare payerCity varchar(100);
+  
+  declare verificationResult varchar(30);
+  
+  declare recipientName varchar(200);
+
+  declare recipientEmail varchar(100);
+  declare recipientAreaCode varchar(20);
+  declare recipientPhoneNumber varchar(30);
+  
+  set payerLastName = (
+    select
+    LastName 
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerFirstName = (
+    select
+    FirstName
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+
+  set payerName = concat(payerLastName, ' ', payerFirstName);
+  
+  set payerEmail = (
+    select
+    Email
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerAreaCode = (
+    select
+    AreaCode
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerPhoneNumber = (
+    select
+    PhoneNumber 
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  
+  set payerStreet = (
+    select 
+    Street
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerStreetNumber = (
+    select 
+    StreetNumber
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerHouseOrFlatNo = (
+    select 
+    HouseOrFlatNo
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerPostalCode = (
+    select 
+    PostalCode
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerCity = (
+    select 
+    City
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  
+  set recipientName = concat(recipientLastName, ' ', recipientFirstName);
+  
+  if IBAN(recipientAccountNumber) = '12345678'
+  then
+    select
+    C.IdentityNumber
+    into verificationResult
+    from Adresses A join Customers C on A.IdentityNumber = C.IdentityNumber
+                      join Accounts ACC on C.IdentityNumber = ACC.IdentityNumber
+    where 
+      AccountNumber = recipientAccountNumber and
+      LastName = recipientLastName and
+      FirstName = recipientFirstName and
+
+      AdressType = 'Adress' and
+
+      Street = recipientStreet and
+      StreetNumber = recipientStreetNumber and
+      HouseOrFlatNo = recipientHouseOrFlatNo and
+      PostalCode = recipientPostalCode and
+      City = recipientCity;
+    
+    if verificationResult is not null
+    then
+      if verificationResult = (
+        select 
+        IdentityNumber 
+        from CustAll_AccNo 
+        where AccountNumber = payerAccountNumber
+      )
+      then
+        set recipientEmail = payerEmail;
+        set recipientAreaCode = payerAreaCode;
+        set recipientPhoneNumber = payerPhoneNumber;
+      else
+        set recipientEmail = (
+          select
+          Email
+          from CustAll_AccNo
+          where AccountNumber = recipientAccountNumber
+        );
+        set recipientAreaCode = (
+          select
+          AreaCode
+          from CustAll_AccNo
+          where AccountNumber = recipientAccountNumber
+        );
+        set recipientPhoneNumber = (
+          select
+          PhoneNumber 
+          from CustAll_AccNo
+          where AccountNumber = recipientAccountNumber
+        );
+      end if;
+
+      update Accounts
+      set Balance = Balance - amount
+      where AccountNumber = payerAccountNumber;
+      update Accounts
+      set Balance = Balance + amount
+      where AccountNumber = recipientAccountNumber;
+
+      insert into Transactions values(
+        transactionNumber,
+        'Transfer',
+        null,
+        payerAccountNumber,
+        recipientAccountNumber,
+        payerName,
+        payerStreet,
+        payerStreetNumber,
+        payerHouseOrFlatNo,
+        payerPostalCode,
+        payerCity,
+        recipientName,
+        recipientStreet,
+        recipientStreetNumber,
+        recipientHouseOrFlatNo,
+        recipientPostalCode,
+        recipientCity,
+        transactionTitle,
+        transactionDate,
+        amount
+      );
+      
+      if recipientEmail = payerEmail
+      then
+        update Transactions
+        set TransactionType = 'Internal transfer'
+        where TransactionNumber = transactionNumber;
+      end if;
+
+      insert into JunctionTable values(
+        transactionNumber,
+        payerAccountNumber
+      );
+      insert into JunctionTable values(
+        transactionNumber,
+        recipientAccountNumber
+      );
+      insert into TransactionHistories values(
+        transactionNumber,
+        payerEmail,
+        payerAreaCode,
+        payerPhoneNumber,
+        recipientEmail,
+        recipientAreaCode,
+        recipientPhoneNumber
+      );
+    else
+      select 'Missmatching data for existing account!' as 'ERR communicate';
+    end if;
+  else
+    update Accounts
+    set Balance = Balance - amount
+    where AccountNumber = payerAccountNumber;
+
+    insert into Transactions values(
+      transactionNumber,
+      'Transfer',
+      null,
+      payerAccountNumber,
+      recipientAccountNumber,
+      payerName,
+      payerStreet,
+      payerStreetNumber,
+      payerHouseOrFlatNo,
+      payerPostalCode,
+      payerCity,
+      recipientName,
+      null,
+      null,
+      null,
+      null,
+      null,
+      transactionTitle,
+      transactionDate,
+      amount
+    );
+    insert into JunctionTable values(
+      transactionNumber,
+      payerAccountNumber
+    );
+    insert into TransactionHistories values(
+      transactionNumber,
+      payerEmail,
+      payerAreaCode,
+      payerPhoneNumber,
+      null,
+      null,
+      null
+    );
+  end if;
+end;
 
 /*3. Nazwa firmy, adres*/
+
+/*..*/
+
+/*4. Procedura dla transferu wewnętrznego (osobna zakładka w aplikacji)*/
 
 /*..*/
