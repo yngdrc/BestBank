@@ -341,7 +341,7 @@ create procedure registerTransaction_byFullData(
 
   in transactionTitle varchar(100),
   in transactionDate date,
-  in amount decimal(10, 0)
+  in amount decimal
 )
 begin
   declare payerLastName varchar(100);
@@ -561,11 +561,11 @@ begin
       payerPostalCode,
       payerCity,
       recipientName,
-      null,
-      null,
-      null,
-      null,
-      null,
+      recipientStreet,
+      recipientStreetNumber,
+      recipientHouseOrFlatNo,
+      recipientPostalCode,
+      recipientCity,
       transactionTitle,
       transactionDate,
       amount
@@ -588,8 +588,279 @@ end;
 
 /*3. Nazwa firmy, adres*/
 
-/*..*/
+create procedure registerTransaction_byCompany(
+  in transactionNumber varchar(18),
+  in payerAccountNumber varchar(26),
+  in companyAccountNumber varchar(26),
+
+  in companyName varchar(100), /*(companyName)*/
+  in companyStreet varchar(100),
+  in companyStreetNumber varchar(5),
+  in companyHouseOrFlatNo varchar(10),
+  in companyPostalCode varchar(20),
+  in companyCity varchar(100),
+
+  in transactionTitle varchar(100),
+  in transactionDate date,
+  in amount decimal /*(10, 0) to wartość domyślna dla typu decimal*/
+) 
+begin
+  declare payerLastName varchar(100);
+  declare payerFirstName varchar(100);
+  declare payerName varchar(200);
+
+  declare payerEmail varchar(100);
+  declare payerAreaCode varchar(20);
+  declare payerPhoneNumber varchar(30);
+
+  declare payerStreet varchar(100);
+  declare payerStreetNumber varchar(5);
+  declare payerHouseOrFlatNo varchar(10);
+  declare payerPostalCode varchar(20);
+  declare payerCity varchar(100);
+
+  set payerLastName = (
+    select
+    LastName 
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerFirstName = (
+    select
+    FirstName
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+
+  set payerName = concat(payerLastName, ' ', payerFirstName);
+  
+  set payerEmail = (
+    select
+    Email
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerAreaCode = (
+    select
+    AreaCode
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerPhoneNumber = (
+    select
+    PhoneNumber 
+    from CustAll_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  
+  set payerStreet = (
+    select 
+    Street
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerStreetNumber = (
+    select 
+    StreetNumber
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerHouseOrFlatNo = (
+    select 
+    HouseOrFlatNo
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerPostalCode = (
+    select 
+    PostalCode
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+  set payerCity = (
+    select 
+    City
+    from AdrAll_TypeOfAdress_AccNo
+    where AccountNumber = payerAccountNumber
+  );
+
+  /*tym razem w ogóle nie przeprowadzamy procesu weryfikacji (w naszym banku nie ma kont firmowych)*/
+
+  update Accounts
+  set Balance = Balance - amount
+  where AccountNumber = payerAccountNumber;
+
+  insert into Transactions values(
+    transactionNumber,
+    'Transfer',
+    null,
+    payerAccountNumber,
+    companyAccountNumber,
+    payerName,
+    payerStreet,
+    payerStreetNumber,
+    payerHouseOrFlatNo,
+    payerPostalCode,
+    payerCity,
+    companyName,
+    companyStreet,
+    companyStreetNumber,
+    companyHouseOrFlatNo,
+    companyPostalCode,
+    companyCity,
+    transactionTitle,
+    transactionDate,
+    amount
+  );
+  insert into JunctionTable values(
+    transactionNumber,
+    payerAccountNumber
+  );
+  insert into TransactionHistories values(
+    transactionNumber,
+    payerEmail,
+    payerAreaCode,
+    payerPhoneNumber,
+    null,
+    null,
+    null
+  );
+end;
 
 /*4. Procedura dla transferu wewnętrznego (osobna zakładka w aplikacji)*/
+use bestbank;
+create procedure registerTransaction_internal(
+  in transactionNumber varchar(18),
+  in sourceAccountNumber varchar(26),
+  in targetAccountNumber varchar(26),
 
-/*..*/
+  in transactionTitle varchar(100),
+  in transactionDate date,
+  in amount decimal
+)
+begin
+  declare customerName varchar(200);
+
+  declare customerEmail varchar(100);
+  declare customerAreaCode varchar(20);
+  declare customerPhoneNumber varchar(30);
+
+  declare customerStreet varchar(100);
+  declare customerStreetNumber varchar(5);
+  declare customerHouseOrFlatNo varchar(10);
+  declare customerPostalCode varchar(20);
+  declare customerCity varchar(100);
+
+  set customerName = concat(
+    (select LastName from CustAll_AccNo where AccountNumber like sourceAccountNumber), ' ',
+    (select FirstName from CustAll_AccNo where AccountNumber like sourceAccountNumber)
+  );
+
+  /*alternatywnie*/
+
+  select
+  Email
+  into customerEmail
+  from CustAll_AccNo
+  where AccountNumber like sourceAccountNumber;
+
+  select
+  AreaCode
+  into customerAreaCode
+  from CustAll_AccNo
+  where AccountNumber like sourceAccountNumber;
+
+  select
+  PhoneNumber
+  into customerPhoneNumber
+  from CustAll_AccNo
+  where AccountNumber like sourceAccountNumber;
+
+  select
+  Street
+  into customerStreet
+  from AdrAll_TypeOfAdress_AccNo
+  where AccountNumber like sourceAccountNumber;
+
+  select
+  StreetNumber
+  into customerStreetNumber
+  from AdrAll_TypeOfAdress_AccNo
+  where AccountNumber like sourceAccountNumber;
+
+  select
+  HouseOrFlatNo
+  into customerHouseOrFlatNo
+  from AdrAll_TypeOfAdress_AccNo
+  where AccountNumber like sourceAccountNumber;
+
+  select
+  PostalCode
+  into customerPostalCode
+  from AdrAll_TypeOfAdress_AccNo
+  where AccountNumber like sourceAccountNumber;
+
+  select
+  City
+  into customerCity
+  from AdrAll_TypeOfAdress_AccNo
+  where AccountNumber like sourceAccountNumber;
+
+  /*
+  Tutaj weryfikacja też jest zbędna, gdyż konto wyświetla się w zakładce kont użytkownika,
+  stąd pewność, że jest on jego właścicielem (należy ono do naszego banku).
+  
+  Wszystkie pozostałe dane traktujemy jak dane nadawcy, które nie są sprawdzane przez procedury.
+  */
+
+  update Accounts
+  set Balance = Balance - amount
+  where AccountNumber like sourceAccountNumber;
+
+  update Accounts
+  set Balance = Balance + amount
+  where AccountNumber like targetAccountNumber;
+
+  insert into Transactions values(
+    transactionNumber,
+    'Internal transfer',
+    null,
+    sourceAccountNumber,
+    targetAccountNumber,
+    customerName,
+    customerStreet,
+    customerStreetNumber,
+    customerHouseOrFlatNo,
+    customerPostalCode,
+    customerCity,
+    customerName,
+    customerStreet,
+    customerStreetNumber,
+    customerHouseOrFlatNo,
+    customerPostalCode,
+    customerCity,
+    transactionTitle,
+    transactionDate,
+    amount
+  );
+
+  insert into JunctionTable values(
+    transactionNumber,
+    sourceAccountNumber
+  );
+
+  insert into JunctionTable values(
+    transactionNumber,
+    targetAccountNumber
+  );
+
+  insert into TransactionHistories values(
+    transactionNumber,
+    customerEmail,
+    customerAreaCode,
+    customerPhoneNumber,
+    customerEmail,
+    customerAreaCode,
+    customerPhoneNumber
+  );
+end;
