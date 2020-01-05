@@ -46,7 +46,7 @@ create procedure registerTransaction_byNameOnly(
 
   in transactionTitle varchar(100),
   in transactionDate date,
-  in amount decimal(10, 0)
+  in amount decimal(15, 2)
 )
 here:begin
   /*reszta danych nadawcy*/
@@ -406,7 +406,7 @@ create procedure registerTransaction_byFullData(
 
   in transactionTitle varchar(100),
   in transactionDate date,
-  in amount decimal
+  in amount decimal(15, 2)
 )
 here:begin
   declare payerLastName varchar(100);
@@ -706,7 +706,7 @@ create procedure registerTransaction_byCompany(
 
   in transactionTitle varchar(100),
   in transactionDate date,
-  in amount decimal /*(10, 0) to wartość domyślna dla typu decimal*/
+  in amount decimal(15, 2)
 ) 
 begin
   declare payerLastName varchar(100);
@@ -840,7 +840,7 @@ create procedure registerTransaction_internal(
 
   in transactionTitle varchar(100),
   in transactionDate date,
-  in amount decimal
+  in amount decimal(15, 2)
 )
 begin
   declare customerName varchar(200);
