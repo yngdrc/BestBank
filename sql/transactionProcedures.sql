@@ -6,6 +6,7 @@ begin
 end;
 
 /*Widoki pomocnicze*/
+---------------------
 
 create view CustAll_AccNo as
   select
@@ -21,7 +22,17 @@ create view AdrAll_TypeOfAdress_AccNo as
                     join Accounts ACC on C.IdentityNumber = ACC.IdentityNumber
   where AdressType like 'Adress';
 
+/*do testowania*/
+create view CustLNFN_AdrAll as
+select 
+LastName, 
+FirstName, 
+A.*
+from Customers C join Adresses A on
+  C.IdentityNumber = A.IdentityNumber;
+
 /*Procedury rejestru transakcji*/
+---------------------------------
 
 /*1. Imię i nazwisko odbiorcy*/
 
@@ -37,7 +48,7 @@ create procedure registerTransaction_byNameOnly(
   in transactionDate date,
   in amount decimal(10, 0)
 )
-begin
+here:begin
   /*reszta danych nadawcy*/
   declare payerLastName varchar(100);
   declare payerFirstName varchar(100);
@@ -52,8 +63,15 @@ begin
   declare payerHouseOrFlatNo varchar(10);
   declare payerPostalCode varchar(20);
   declare payerCity varchar(100);
-  /*weryfikacja odbiorcy*/
-  declare verificationResult varchar(30);
+
+  /*Kilka procesów weryfikacji - szczegółowe komunikaty:*/
+  /*weryfikacja istnienia konta odbiorcy*/
+  declare doesAccountExist varchar(26);
+  /*weryfikacja aktualności konta odbiorcy*/
+  declare isAccountActual varchar(11);
+  /*weryfikacja zgodności danych odbiorcy*/
+  declare isDataCompatible varchar(30);
+
   /*reszta danych odbiorcy*/
   declare recipientName varchar(200);
 
@@ -105,53 +123,88 @@ begin
     select 
     Street
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where
+      AccountNumber = payerAccountNumber and
+      AdressStatus = 'Actual'
   );
   set payerStreetNumber = (
     select 
     StreetNumber
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where
+      AccountNumber = payerAccountNumber and
+      AdressStatus = 'Actual'
   );
   set payerHouseOrFlatNo = (
     select 
     HouseOrFlatNo
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where
+      AccountNumber = payerAccountNumber and
+      AdressStatus = 'Actual'
   );
   set payerPostalCode = (
     select 
     PostalCode
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where
+      AccountNumber = payerAccountNumber and
+      AdressStatus = 'Actual'
   );
   set payerCity = (
     select 
     City
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where
+      AccountNumber = payerAccountNumber and
+      AdressStatus = 'Actual'
   );
   /*(dodatkowo)*/
   set recipientName = concat(recipientLastName, ' ', recipientFirstName);
 
-  /*weryfikacja odbiorcy - na początku sprawdzamy, czy konto odbiorcy jest zarejestrowane w naszym banku*/
+
+  /*weryfikacja IBAN'u (czy konto należy do naszego banku)*/
   if IBAN(recipientAccountNumber) = '12345678'
   then
+    /*weryfikacja istnienia konta odbiorcy*/
+    select
+    AccountNumber
+    into doesAccountExist
+    from Accounts
+    where AccountNumber = recipientAccountNumber;
+    
+    if doesAccountExist is null
+    then
+      select 'Transaction rejected, target account is not listed in the bank';
+      leave here;
+    end if;
+    /*weryfikacja aktualności konta odbiorcy*/
+    select
+    AccountStatus
+    into isAccountActual
+    from Accounts
+    where AccountNumber = recipientAccountNumber;
+
+    if isAccountActual = 'Inactive'
+    then
+      select 'Transaction rejected, target account is no longer active in the bank';
+      leave here;
+    end if;
     /*weryfikacja zgodności danych (czy dla takiego konta isnieje taki klient)*/
     /*zamiast IF EXISTS poniżej, stosujemy instrukcję SELECT INTO (ogarniczenie dostępu do zmiennych):*/
     select
     IdentityNumber
-    into verificationResult
+    into isDataCompatible
     from CustAll_AccNo
     where 
       AccountNumber = recipientAccountNumber and /*UNIQUE*/
       LastName = recipientLastName and
       FirstName = recipientFirstName;
     
-    if verificationResult is not null
+    if isDataCompatible is not null
     then
       /*dopiero po weryfikacji zgodności podanych informacji sprawdzamy dodatkowo, czy nadawca to jednoczesnie odbiorca*/
-      if verificationResult = (
+      if isDataCompatible = (
         select 
         IdentityNumber 
         from CustAll_AccNo 
@@ -187,42 +240,53 @@ begin
           from CustAll_AccNo
           where AccountNumber = recipientAccountNumber
         );
-
+        
         set recipientStreet = (
           select 
           Street
           from AdrAll_TypeOfAdress_AccNo
-          where AccountNumber = recipientAccountNumber
+          where 
+            AccountNumber = recipientAccountNumber and 
+            AdressStatus = 'Actual'
         );
         set recipientStreetNumber = (
           select 
           StreetNumber
           from AdrAll_TypeOfAdress_AccNo
-          where AccountNumber = recipientAccountNumber
+          where 
+            AccountNumber = recipientAccountNumber and 
+            AdressStatus = 'Actual'
         );
         set recipientHouseOrFlatNo = (
           select 
           HouseOrFlatNo
           from AdrAll_TypeOfAdress_AccNo
-          where AccountNumber = recipientAccountNumber
+          where 
+            AccountNumber = recipientAccountNumber and 
+            AdressStatus = 'Actual'
         );
         set recipientPostalCode = (
           select 
           PostalCode
           from AdrAll_TypeOfAdress_AccNo
-          where AccountNumber = recipientAccountNumber
+          where 
+            AccountNumber = recipientAccountNumber and 
+            AdressStatus = 'Actual'
         );
         set recipientCity = (
           select 
           City
           from AdrAll_TypeOfAdress_AccNo
-          where AccountNumber = recipientAccountNumber
+          where 
+            AccountNumber = recipientAccountNumber and 
+            AdressStatus = 'Actual'
         );
       end if;
 
       update Accounts
       set Balance = Balance - amount
       where AccountNumber = payerAccountNumber;
+
       update Accounts
       set Balance = Balance + amount
       where AccountNumber = recipientAccountNumber;
@@ -276,7 +340,8 @@ begin
       );
     /*jeśli dane nie pasują do konta*/
     else
-      select 'Missmatching data for existing account!' as 'ERR communicate';
+      /*bez konkretnego komunikatu (np. wrong name/surname match for an existing account)*/
+      select 'Transaction rejected, missmatching data for target account';
     end if;
   /*jeśli w naszym banku nie ma takiego konta*/  
   else
@@ -343,7 +408,7 @@ create procedure registerTransaction_byFullData(
   in transactionDate date,
   in amount decimal
 )
-begin
+here:begin
   declare payerLastName varchar(100);
   declare payerFirstName varchar(100);
   declare payerName varchar(200);
@@ -357,15 +422,18 @@ begin
   declare payerHouseOrFlatNo varchar(10);
   declare payerPostalCode varchar(20);
   declare payerCity varchar(100);
-  
-  declare verificationResult varchar(30);
+
+  declare isAdressActual varchar(8);
+  declare doesAccountExist varchar(26);
+  declare isAccountActual varchar(11);
+  declare isDataCompatible varchar(30);
   
   declare recipientName varchar(200);
 
   declare recipientEmail varchar(100);
   declare recipientAreaCode varchar(20);
   declare recipientPhoneNumber varchar(30);
-  
+
   set payerLastName = (
     select
     LastName 
@@ -404,31 +472,41 @@ begin
     select 
     Street
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where 
+      AccountNumber = payerAccountNumber and 
+      AdressStatus = 'Actual'
   );
   set payerStreetNumber = (
     select 
     StreetNumber
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where 
+      AccountNumber = payerAccountNumber and 
+      AdressStatus = 'Actual'
   );
   set payerHouseOrFlatNo = (
     select 
     HouseOrFlatNo
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where 
+      AccountNumber = payerAccountNumber and 
+      AdressStatus = 'Actual'
   );
   set payerPostalCode = (
     select 
     PostalCode
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where 
+      AccountNumber = payerAccountNumber and 
+      AdressStatus = 'Actual'
   );
   set payerCity = (
     select 
     City
     from AdrAll_TypeOfAdress_AccNo
-    where AccountNumber = payerAccountNumber
+    where 
+      AccountNumber = payerAccountNumber and 
+      AdressStatus = 'Actual'
   );
   
   set recipientName = concat(recipientLastName, ' ', recipientFirstName);
@@ -436,16 +514,41 @@ begin
   if IBAN(recipientAccountNumber) = '12345678'
   then
     select
+    AccountNumber
+    into doesAccountExist
+    from Accounts
+    where AccountNumber = recipientAccountNumber;
+    
+    if doesAccountExist is null
+    then
+      select 'Transaction rejected, target account is not listed in the bank';
+      leave here;
+    end if;
+
+    select
+    AccountStatus
+    into isAccountActual
+    from Accounts
+    where AccountNumber = recipientAccountNumber;
+
+    if isAccountActual = 'Inactive'
+    then
+      select 'Transaction rejected, target account is no longer active in the bank';
+      leave here;
+    end if;
+
+    select
     C.IdentityNumber
-    into verificationResult
+    into isDataCompatible
     from Adresses A join Customers C on A.IdentityNumber = C.IdentityNumber
                       join Accounts ACC on C.IdentityNumber = ACC.IdentityNumber
     where 
       AccountNumber = recipientAccountNumber and
       LastName = recipientLastName and
       FirstName = recipientFirstName and
-
+      /*w tym przypadku sprawdzenie adresu odbiorcy następuje dokładnie w tym miejscu (bez konkretnego komunikatu)*/
       AdressType = 'Adress' and
+      AdressStatus = 'Actual' and
 
       Street = recipientStreet and
       StreetNumber = recipientStreetNumber and
@@ -453,9 +556,9 @@ begin
       PostalCode = recipientPostalCode and
       City = recipientCity;
     
-    if verificationResult is not null
+    if isDataCompatible is not null
     then
-      if verificationResult = (
+      if isDataCompatible = (
         select 
         IdentityNumber 
         from CustAll_AccNo 
@@ -489,6 +592,7 @@ begin
       update Accounts
       set Balance = Balance - amount
       where AccountNumber = payerAccountNumber;
+
       update Accounts
       set Balance = Balance + amount
       where AccountNumber = recipientAccountNumber;
@@ -541,7 +645,7 @@ begin
         recipientPhoneNumber
       );
     else
-      select 'Missmatching data for existing account!' as 'ERR communicate';
+      select 'Transaction rejected, missmatching data for target account';
     end if;
   else
     update Accounts
@@ -593,7 +697,7 @@ create procedure registerTransaction_byCompany(
   in payerAccountNumber varchar(26),
   in companyAccountNumber varchar(26),
 
-  in companyName varchar(100), /*(companyName)*/
+  in companyName varchar(100),
   in companyStreet varchar(100),
   in companyStreetNumber varchar(5),
   in companyHouseOrFlatNo varchar(10),
@@ -728,7 +832,7 @@ begin
 end;
 
 /*4. Procedura dla transferu wewnętrznego (osobna zakładka w aplikacji)*/
-use bestbank;
+
 create procedure registerTransaction_internal(
   in transactionNumber varchar(18),
   in sourceAccountNumber varchar(26),
@@ -780,31 +884,41 @@ begin
   Street
   into customerStreet
   from AdrAll_TypeOfAdress_AccNo
-  where AccountNumber like sourceAccountNumber;
+  where 
+    AccountNumber like sourceAccountNumber and
+    AdressStatus like 'Actual';
 
   select
   StreetNumber
   into customerStreetNumber
   from AdrAll_TypeOfAdress_AccNo
-  where AccountNumber like sourceAccountNumber;
+  where 
+    AccountNumber like sourceAccountNumber and
+    AdressStatus like 'Actual';
 
   select
   HouseOrFlatNo
   into customerHouseOrFlatNo
   from AdrAll_TypeOfAdress_AccNo
-  where AccountNumber like sourceAccountNumber;
+  where 
+    AccountNumber like sourceAccountNumber and
+    AdressStatus like 'Actual';
 
   select
   PostalCode
   into customerPostalCode
   from AdrAll_TypeOfAdress_AccNo
-  where AccountNumber like sourceAccountNumber;
+  where 
+    AccountNumber like sourceAccountNumber and
+    AdressStatus like 'Actual';
 
   select
   City
   into customerCity
   from AdrAll_TypeOfAdress_AccNo
-  where AccountNumber like sourceAccountNumber;
+  where 
+    AccountNumber like sourceAccountNumber and
+    AdressStatus like 'Actual';
 
   /*
   Tutaj weryfikacja też jest zbędna, gdyż konto wyświetla się w zakładce kont użytkownika,
