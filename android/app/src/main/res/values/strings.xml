@@ -9,7 +9,7 @@
     <string name="tab_text_4">Tab 2</string>
     <string name="tab_text_5">Tab 2</string>
     <string name="currency"><sup>$</sup></string>
-
+    
     //Account details
     <string name="identity_number">Identity Number</string>
     <string name="email">Email</string>

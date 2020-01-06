@@ -11,15 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Transaction"></activity>
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/default_notification_channel_id" />
-
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".LoginActivity"
             android:noHistory="true">
@@ -32,7 +28,6 @@
         <activity
             android:name=".RegisterActivity"
             android:noHistory="true" />
-
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
