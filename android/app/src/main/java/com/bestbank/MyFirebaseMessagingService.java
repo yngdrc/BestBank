@@ -141,7 +141,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         //.setSmallIcon(R.drawable.ic_stat_ic_notification)
                         .setContentTitle("BestBank")
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentText("You received $" + body[1] + " from " + body[0])
+                        .setContentText("You received $" + body[0] + " from " + body[1])
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);

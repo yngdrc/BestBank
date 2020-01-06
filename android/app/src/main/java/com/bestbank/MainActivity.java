@@ -5,13 +5,18 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -20,6 +25,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
         final SharedPreferences prefs = getApplicationContext().getSharedPreferences("prefs", 0);
         final SharedPreferences.Editor edit = prefs.edit();
 
-        TabLayout mTabLayout = findViewById(R.id.tabLayout);
-        TabItem overviewTab = findViewById(R.id.overviewTab);
-        TabItem historyTab = findViewById(R.id.historyTab);
+        final TabLayout mTabLayout = findViewById(R.id.tabLayout);
+        final TabItem overviewTab = findViewById(R.id.overviewTab);
+        final TabItem historyTab = findViewById(R.id.historyTab);
         ViewPager viewPager = findViewById(R.id.viewpager);
         PagerController mPagerController;
 
@@ -103,6 +109,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         // [END retrieve_current_token]
+
+        FloatingActionButton fab = findViewById(R.id.floating_action_button);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
     }
