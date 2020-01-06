@@ -20,8 +20,6 @@ public class PagerController extends FragmentPagerAdapter {
                 return new Overview();
             case 1:
                 return new TransactionsHistory();
-            case 2:
-                return new Settings();
             default:
                 return null;
         }

@@ -4,14 +4,12 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,7 +21,6 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,7 +87,6 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();
-                hideKeyboard(LoginActivity.this);
 
                 // Response received from the server
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
@@ -107,25 +103,27 @@ public class LoginActivity extends Activity {
                                     String accountDetails = jsonResponse.getString("accountDetails"+x);
                                     JSONObject jsonObject = new JSONObject(accountDetails);
                                     int balance = jsonObject.getInt("balance"+x);
-                                    String accountNumber = jsonObject.getString("accountNumber"+x);
-                                    Log.d("acc", accountNumber);
+                                    Long accountNumber = jsonObject.getLong("accountNumber"+x);
                                     String accountType = jsonObject.getString("accountType"+x);
                                     String accountName = jsonObject.getString("accountName"+x);
-                                    edit.putString(username+"balance"+x, String.valueOf(balance));
-                                    edit.putString(username+"accountNumber"+x, accountNumber);
-                                    edit.putString(username+"accountType"+x, accountType);
-                                    edit.putString(username+"accountName"+x, accountName);
+                                    edit.putString("balance"+x, String.valueOf(balance));
+                                    edit.putString("accountNumber"+x, String.valueOf(accountNumber));
+                                    edit.putString("accountType"+x, accountType);
+                                    edit.putString("accountName"+x, accountName);
+                                    Log.d("det", String.valueOf(balance));
                                 }
-
+//
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 edit.putInt("accounts", accounts);
                                 edit.commit();
                                 LoginActivity.this.startActivity(intent);
                             } else {
-                                Snackbar snackbar = Snackbar.make(root, "Couldn't sign in", Snackbar.LENGTH_LONG);
-                                snackbar.getView().setBackgroundColor(getColor(R.color.loginButton));
-                                snackbar.setActionTextColor(Color.WHITE);
-                                snackbar.setAction("Action", null).show();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                builder.setMessage("Login Failed")
+                                        .setNegativeButton("Retry", null)
+                                        .create()
+                                        .show();
+                                Toast.makeText(LoginActivity.this, "asd", Toast.LENGTH_SHORT).show();
                             }
 
                         } catch (JSONException e) {
@@ -139,17 +137,6 @@ public class LoginActivity extends Activity {
                 queue.add(loginRequest);
             }
         });
-    }
-
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        //Find the currently focused view, so we can grab the correct window token from it.
-        View view = activity.getCurrentFocus();
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = new View(activity);
-        }
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }
 

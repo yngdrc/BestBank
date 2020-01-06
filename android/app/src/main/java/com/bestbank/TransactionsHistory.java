@@ -31,8 +31,8 @@ public class TransactionsHistory extends Fragment {
         final SharedPreferences prefs = getContext().getSharedPreferences("prefs", 0);
         Log.d("username", prefs.getString("username", ""));
         View root = inflater.inflate(R.layout.fragment_transactions_history, container,    false);
-        //TextView tv = root.findViewById(R.id.transactionName);
-        //tv.setText(prefs.getString("username", ""));
+        TextView tv = root.findViewById(R.id.transactionName);
+        tv.setText(prefs.getString("username", ""));
         return root;
     }
 
