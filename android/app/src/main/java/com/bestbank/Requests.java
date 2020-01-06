@@ -9,6 +9,7 @@ import java.util.Map;
 public class Requests extends StringRequest {
     private static final String LOGIN_REQUEST_URL = "http://bestbank.cba.pl/android/login.php";
     private static final String REGISTER_REQUEST_URL = "http://bestbank.cba.pl/android/register.php";
+    private static final String TRANSACTION_REQUEST_URL = "http://bestbank.cba.pl/android/transaction.php";
     private Map<String, String> params;
 
     public Requests(String username, String password, Response.Listener<String> listener) {
@@ -31,6 +32,11 @@ public class Requests extends StringRequest {
         params.put("TitleOfCourtesy", toc);
         params.put("Password1", password);
         params.put("Password2", confirmPassword);
+    }
+
+    public Requests(Response.Listener<String> listener) {
+        super(Method.POST, TRANSACTION_REQUEST_URL, listener, null);
+        params = new HashMap<>();
     }
 
     @Override
