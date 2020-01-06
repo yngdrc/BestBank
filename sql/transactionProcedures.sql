@@ -693,9 +693,9 @@ end;
 /*3. Nazwa firmy, adres*/
 
 create procedure registerTransaction_byCompany(
-  in transactionNumber varchar(18),
-  in payerAccountNumber varchar(26),
-  in companyAccountNumber varchar(26),
+  in transactionNumber char(18),
+  in payerAccountNumber char(26),
+  in companyAccountNumber char(26),
 
   in companyName varchar(100),
   in companyStreet varchar(100),
@@ -834,9 +834,9 @@ end;
 /*4. Procedura dla transferu wewnętrznego (osobna zakładka w aplikacji)*/
 
 create procedure registerTransaction_internal(
-  in transactionNumber varchar(18),
-  in sourceAccountNumber varchar(26),
-  in targetAccountNumber varchar(26),
+  in transactionNumber char(18),
+  in sourceAccountNumber char(26),
+  in targetAccountNumber char(26),
 
   in transactionTitle varchar(100),
   in transactionDate date,
