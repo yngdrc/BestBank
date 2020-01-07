@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bestbank.Transaction">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/overview_balance_bg"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:padding="20dp"
+            android:text="Send money"
+            android:textColor="#000000"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif"
+                android:paddingStart="20dp"
+                android:paddingEnd="5dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="From: "
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/transaction_from"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif"
+                android:paddingStart="20dp"
+                android:paddingEnd="5dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="To: "
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:id="@+id/transaction_to"
+                android:textSize="20dp"
+                android:background="@null"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif"
+                android:paddingStart="20dp"
+                android:paddingEnd="5dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="Amount: "
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.5"
+                android:id="@+id/transaction_amount"
+                android:textSize="20dp"
+                android:background="@null"
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"/>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send"
+            android:id="@+id/transaction_send"
+            android:padding="20dp"
+            android:layout_marginTop="50dp"
+            android:textColor="#ffffff"
+            android:background="@drawable/send_button"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

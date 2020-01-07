@@ -3,12 +3,14 @@ package com.bestbank;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -114,8 +116,9 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(MainActivity.this, Transaction.class));
+                //Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
             }
         });
 

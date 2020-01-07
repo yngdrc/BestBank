@@ -98,11 +98,12 @@ public class LoginActivity extends Activity {
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
-                            //Log.d("response", response);
+                            Log.d("response", response);
                             boolean success = jsonResponse.getBoolean("success");
 
                             if (success) {
                                 int accounts = jsonResponse.getInt("accounts");
+                                edit.putString("username", username);
                                 for (int x = 0; x<accounts; x++) {
                                     String accountDetails = jsonResponse.getString("accountDetails"+x);
                                     JSONObject jsonObject = new JSONObject(accountDetails);
@@ -111,10 +112,12 @@ public class LoginActivity extends Activity {
                                     Log.d("acc", accountNumber);
                                     String accountType = jsonObject.getString("accountType"+x);
                                     String accountName = jsonObject.getString("accountName"+x);
+                                    String identityNumber = jsonObject.getString("identityNumber");
                                     edit.putString(username+"balance"+x, String.valueOf(balance));
                                     edit.putString(username+"accountNumber"+x, accountNumber);
                                     edit.putString(username+"accountType"+x, accountType);
                                     edit.putString(username+"accountName"+x, accountName);
+                                    edit.putString(username+"identityNumber", identityNumber);
                                 }
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
