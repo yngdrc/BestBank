@@ -1,6 +1,6 @@
 # BestBank
 **Modern Online Banking for everyone**
-BestBank is a student project for Agile Software Development providing opportunity to learn about Agile Programming, Scrum technology and furthermore develop skills in the fields of Java programming, database projecting and managing and website and app developing. Inspired by several leading web banking services and introducing a few improvements to generally used practices, it was designed to be an user-friendly, foolproof, functional and secure way of running person's own bank account via Internet.    // TO MOŻE BYĆ ZA DŁUGIE MOŻESZ PRZYCIĄĆ PIERWSZE ZDANIE 
+BestBank is a student project for Agile Software Development providing opportunity to learn about Agile Programming, Scrum technology and furthermore develop skills in the fields of Java programming, database projecting and managing and website and app developing. Inspired by several leading web banking services and introducing a few improvements to generally used practices, it was designed to be an user-friendly, foolproof, functional and secure way of running person's own bank account via Internet.
 
 ## Features
 For the project's purpose, two tools have been developed: the BestBank's app and the BestBank's website.
