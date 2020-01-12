@@ -1,11 +1,12 @@
 body {
-  background-color: #111111;
-  color: #dddddd;
-  margin: 0;
+  font-family: 'Roboto', sans-serif;
   text-align: center;
 }
 
-a { color: #8888dd; }
+a {
+  color: #000000;
+  text-decoration: none;
+}
 
 table {
   border-collapse: collapse;
@@ -14,15 +15,34 @@ table {
 
 td, th {
   border: 1px solid #555555;
+  padding: 5px;
+}
+
+#container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 1000px;
 }
 
 #top {
-  font-size: 24px;
-  margin: 20px;
+  font-size: 36px;
+  padding: 10px 0;
+  text-align: left;
 }
-#top a { color: #dddddd; text-decoration: none; }
 
-#container {
-  background-color: #222222;
-  padding: 20px;
+#menu {
+  background-color: #c6bffc;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  text-align: right;
+}
+
+#content {
+  background-color: #dddddd;
+  padding: 20px 0;
+}
+
+#welcome a {
+  color: blue;
+  text-decoration: underline;
 }
