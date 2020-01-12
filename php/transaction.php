@@ -77,55 +77,68 @@ if (isset($_POST['PayerAccountNumber'])) {
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
 </head>
 <body>
-  <div id="top"><a href="/">BestBank</a></div>
   <div id="container">
-    <div><?php
-      echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';
-    ?></div>
+    <div id="top">
+      <a href="/">
+        <img src="logo.jpg" alt="" width="30" height="30">
+        BestBank
+      </a>
+    </div>
 
-    <?php session_msg('TFE_Amount') ?>
-    <?php session_msg('TFE_RecipientAccountNumber') ?>
+    <div id="menu">
+      <a href="/">home</a>
+    </div>
 
-    <form method="post">
-      <table>
-        <tr>
-          <td>PayerAccountNumber</td>
-          <td><?php
-            $sql = sprintf(
-              "SELECT * FROM `Accounts` WHERE IdentityNumber='%s'",
-              mysqli_real_escape_string($conn, $_SESSION['IdentityNumber'])
-            );
-            $result = $conn->query($sql);
-            $num_accounts = $result->num_rows;
+    <div id="content">
+      <div id="welcome"><?php
+        echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';
+      ?></div><br>
 
-            if ($num_accounts == 0) {
-              $_SESSION['TransactionError'] = 'You don\'t have any account';
-              header('Location: welcome.php');
-              exit();
-            } else {
-              echo '<select name="PayerAccountNumber">';
-              while ($row = $result->fetch_assoc()) {
-                $AccountNumber = $row['AccountNumber'];
-                echo '<option value="'.$AccountNumber.'">'.$AccountNumber.'</option>';
+      <?php session_msg('TFE_Amount') ?>
+      <?php session_msg('TFE_RecipientAccountNumber') ?>
+
+      <form method="post">
+        <table>
+          <tr>
+            <td>PayerAccountNumber</td>
+            <td><?php
+              $sql = sprintf(
+                "SELECT * FROM `Accounts` WHERE IdentityNumber='%s'",
+                mysqli_real_escape_string($conn, $_SESSION['IdentityNumber'])
+              );
+              $result = $conn->query($sql);
+              $num_accounts = $result->num_rows;
+
+              if ($num_accounts == 0) {
+                $_SESSION['TransactionError'] = 'You don\'t have any account';
+                header('Location: welcome.php');
+                exit();
+              } else {
+                echo '<select name="PayerAccountNumber">';
+                while ($row = $result->fetch_assoc()) {
+                  $AccountNumber = $row['AccountNumber'];
+                  echo '<option value="'.$AccountNumber.'">'.$AccountNumber.'</option>';
+                }
+                echo '</select>';
               }
-              echo '</select>';
-            }
-          ?></td>
-        </tr>
-        <tr>
-          <td>RecipientAccountNumber</td>
-          <td><input type="text" name="RecipientAccountNumber" size="26"></td>
-        </tr>
-        <tr>
-          <td>Amount</td>
-          <td><input type="text" name="Amount" size="26"></td>
-        </tr>
-      </table>
-      <button type="submit">Submit</button>
-    </form>
+            ?></td>
+          </tr>
+          <tr>
+            <td>RecipientAccountNumber</td>
+            <td><input type="text" name="RecipientAccountNumber" size="26"></td>
+          </tr>
+          <tr>
+            <td>Amount</td>
+            <td><input type="text" name="Amount" size="26"></td>
+          </tr>
+        </table>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>

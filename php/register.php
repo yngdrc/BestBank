@@ -145,52 +145,65 @@ if (isset($_POST['IdentityNumber'])) {
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
 </head>
 <body>
-  <div id="top"><a href="/">BestBank</a></div>
   <div id="container">
-    <form method="post">
-      <input type="text" placeholder="IdentityNumber" name="IdentityNumber" value="<?php
-        input_value('RF_IdentityNumber'); ?>" autocomplete="off"><br>
-      <?php session_msg('RFE_IdentityNumber'); ?>
+    <div id="top">
+      <a href="/">
+        <img src="logo.jpg" alt="" width="30" height="30">
+        BestBank
+      </a>
+    </div>
 
-      <input type="text" placeholder="Email" name="Email" value="<?php
-        input_value('RF_Email');
-      ?>" autocomplete="off"><br>
-      <?php session_msg('RFE_Email'); ?>
+    <div id="menu">
+      <a href="/">home</a>
+    </div>
 
-      <input type="text" placeholder="FirstName" name="FirstName" value="<?php
-        input_value('RF_FirstName'); ?>" autocomplete="off"><br>
-      <?php session_msg('RFE_FirstName'); ?>
+    <div id="content">
+      <form method="post">
+        <input type="text" placeholder="IdentityNumber" name="IdentityNumber" value="<?php
+          input_value('RF_IdentityNumber'); ?>" autocomplete="off"><br>
+        <?php session_msg('RFE_IdentityNumber'); ?>
 
-      <input type="text" placeholder="LastName" name="LastName" value="<?php
-        input_value('RF_LastName'); ?>" autocomplete="off"><br>
-      <?php session_msg('RFE_LastName'); ?>
+        <input type="text" placeholder="Email" name="Email" value="<?php
+          input_value('RF_Email');
+        ?>" autocomplete="off"><br>
+        <?php session_msg('RFE_Email'); ?>
 
-      <input type="text" placeholder="BirthDate" name="BirthDate" value="<?php
-        input_value('RF_BirthDate'); ?>" autocomplete="off"><br>
-      <?php session_msg('RFE_BirthDate'); ?>
+        <input type="text" placeholder="FirstName" name="FirstName" value="<?php
+          input_value('RF_FirstName'); ?>" autocomplete="off"><br>
+        <?php session_msg('RFE_FirstName'); ?>
 
-      <input type="text" placeholder="AreaCode" name="AreaCode" value="<?php
-        input_value('RF_AreaCode'); ?>" autocomplete="off"><br>
-      <?php session_msg('RFE_AreaCode'); ?>
+        <input type="text" placeholder="LastName" name="LastName" value="<?php
+          input_value('RF_LastName'); ?>" autocomplete="off"><br>
+        <?php session_msg('RFE_LastName'); ?>
 
-      <input type="text" placeholder="PhoneNumber" name="PhoneNumber" value="<?php
-        input_value('RF_PhoneNumber'); ?>" autocomplete="off"><br>
-      <?php session_msg('RFE_PhoneNumber'); ?>
+        <input type="text" placeholder="BirthDate" name="BirthDate" value="<?php
+          input_value('RF_BirthDate'); ?>" autocomplete="off"><br>
+        <?php session_msg('RFE_BirthDate'); ?>
 
-      <input type="radio" name="TitleOfCourtesy" value="Mr." id="Mr.">
-      <label for="Mr.">Mr.</label> |
-      <input type="radio" name="TitleOfCourtesy" value="Mrs." id="Mrs.">
-      <label for="Mrs.">Mrs.</label><br>
-      <?php session_msg('RFE_TitleOfCourtesy'); ?>
+        <input type="text" placeholder="AreaCode" name="AreaCode" value="<?php
+          input_value('RF_AreaCode'); ?>" autocomplete="off"><br>
+        <?php session_msg('RFE_AreaCode'); ?>
 
-      <input type="password" placeholder="Password" name="Password1"><br>
-      <input type="password" placeholder="Confirm password" name="Password2"><br>
-      <?php session_msg('RFE_Password'); ?>
-      <button type="submit">Register</button>
-    </form>
+        <input type="text" placeholder="PhoneNumber" name="PhoneNumber" value="<?php
+          input_value('RF_PhoneNumber'); ?>" autocomplete="off"><br>
+        <?php session_msg('RFE_PhoneNumber'); ?>
+
+        <input type="radio" name="TitleOfCourtesy" value="Mr." id="Mr.">
+        <label for="Mr.">Mr.</label> |
+        <input type="radio" name="TitleOfCourtesy" value="Mrs." id="Mrs.">
+        <label for="Mrs.">Mrs.</label><br>
+        <?php session_msg('RFE_TitleOfCourtesy'); ?>
+
+        <input type="password" placeholder="Password" name="Password1"><br>
+        <input type="password" placeholder="Confirm password" name="Password2"><br>
+        <?php session_msg('RFE_Password'); ?>
+        <button type="submit">Register</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>
