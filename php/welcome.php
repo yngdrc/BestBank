@@ -13,56 +13,67 @@ require 'base.php';
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
 </head>
 <body>
-  <div id="top"><a href="/">BestBank</a></div>
   <div id="container">
-    <div><?php
-      echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';
-    ?></div>
+    <div id="top">
+      <a href="/">
+        <img src="logo.jpg" alt="" width="30" height="30">
+        BestBank
+      </a>
+    </div>
 
-    <?php session_msg('TransactionInfo'); ?>
-    <?php session_msg('TransactionError'); ?>
+    <div id="menu">
+      <a href="add_account.php">add account</a> |
+      <a href="transaction.php">transaction</a>
+    </div>
 
-    <?php
-    $sql = sprintf(
-      "SELECT * FROM `Accounts` WHERE IdentityNumber='%s'",
-      mysqli_real_escape_string($conn, $_SESSION['IdentityNumber'])
-    );
-    $result = $conn->query($sql);
-    $num_accounts = $result->num_rows;
+    <div id="content">
+      <div id="welcome"><?php
+        echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';
+      ?></div><br>
 
-    if ($num_accounts != 0) {
-      echo '
-      <table class="centerTable">
-        <tr>
-          <td>Balance</td>
-          <td>Number</td>
-          <td>Type</td>
-          <td>Name</td>
-        </tr>';
+      <?php session_msg('TransactionInfo'); ?>
+      <?php session_msg('TransactionError'); ?>
 
-      while ($row = $result->fetch_assoc()) {
-        $Balance = $row['Balance'];
-        $AccountNumber = $row['AccountNumber'];
-        $AccountType = $row['AccountType'];
-        $AccountName = $row['AccountName'];
-        echo "
-        <tr>
-          <td>$Balance</td>
-          <td>$AccountNumber</td>
-          <td>$AccountType</td>
-          <td>$AccountName</td>
-        </tr>";
+      <?php
+      $sql = sprintf(
+        "SELECT * FROM `Accounts` WHERE IdentityNumber='%s'",
+        mysqli_real_escape_string($conn, $_SESSION['IdentityNumber'])
+      );
+      $result = $conn->query($sql);
+      $num_accounts = $result->num_rows;
+
+      if ($num_accounts != 0) {
+        echo '
+        <table class="centerTable">
+          <tr>
+            <td>Balance</td>
+            <td>Number</td>
+            <td>Type</td>
+            <td>Name</td>
+          </tr>';
+
+        while ($row = $result->fetch_assoc()) {
+          $Balance = $row['Balance'];
+          $AccountNumber = $row['AccountNumber'];
+          $AccountType = $row['AccountType'];
+          $AccountName = $row['AccountName'];
+          echo "
+          <tr>
+            <td>$Balance</td>
+            <td>$AccountNumber</td>
+            <td>$AccountType</td>
+            <td>$AccountName</td>
+          </tr>";
+        }
+
+        echo '</table>';
       }
-
-      echo '</table>';
-    }
-    ?>
-
-    <a href="add_account.php">Add account</a><br>
-    <a href="transaction.php">Transaction</a><br>
+      ?>
+    </div>
   </div>
 </body>
 </html>

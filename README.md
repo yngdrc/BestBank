@@ -11,8 +11,11 @@ In the database passwords are hashed safely and appropiate checks are being trig
 We appreciate any support in form of testing our app or website
 * Found Issue can be submitted here: github.com/yngdrc/bestbank/issues
 
-## Status
-The project is still in development however most of the work is done and both app and website are functional
+## License 
+This project is licensed under the terms of the MIT license.
 
-##Authors
+## Status
+Work on the project has been successfully finished, all the goals have been met and both app and website are functional
+
+## Authors
 Konrad Rybicki, Kacper Heller, Dominik Piela, Jan Gregor

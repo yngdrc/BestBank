@@ -49,32 +49,45 @@ if (isset($_POST['AccountType'])) {
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
 </head>
 <body>
-  <div id="top"><a href="/">BestBank</a></div>
   <div id="container">
-    <div><?php
-      echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';
-    ?></div>
+    <div id="top">
+      <a href="/">
+        <img src="logo.jpg" alt="" width="30" height="30">
+        BestBank
+      </a>
+    </div>
 
-    <form method="post">
-      <?php
-      $sql = sprintf(
-        "SELECT * FROM `AccountTypes`",
-        mysqli_real_escape_string($conn, $_SESSION['IdentityNumber'])
-      );
-      $result = $conn->query($sql);
+    <div id="menu">
+      <a href="/">home</a>
+    </div>
 
-      while ($row = $result->fetch_assoc()) {
-        $AccountType = $row['AccountType'];
-        echo '<input type="radio" name="AccountType" id="'.$AccountType.'" value="'.$AccountType.'">';
-        echo '<label for="'.$AccountType.'">'.$AccountType.'</label><br>';
-      }
-      ?>
-      <input type="text" placeholder="AccountName" name="AccountName"><br>
-      <button type="submit">Add</button>
-    </form>
+    <div id="content">
+      <div id="welcome"><?php
+        echo 'Welcome '.$_SESSION['FirstName'].' '.$_SESSION['LastName'].'! [<a href="logout.php">log out</a>]<br>';
+      ?></div><br>
+
+      <form method="post">
+        <?php
+        $sql = sprintf(
+          "SELECT * FROM `AccountTypes`",
+          mysqli_real_escape_string($conn, $_SESSION['IdentityNumber'])
+        );
+        $result = $conn->query($sql);
+
+        while ($row = $result->fetch_assoc()) {
+          $AccountType = $row['AccountType'];
+          echo '<input type="radio" name="AccountType" id="'.$AccountType.'" value="'.$AccountType.'">';
+          echo '<label for="'.$AccountType.'">'.$AccountType.'</label><br>';
+        }
+        ?>
+        <input type="text" placeholder="AccountName" name="AccountName"><br>
+        <button type="submit">Add</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>
