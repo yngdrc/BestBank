@@ -10,6 +10,7 @@ public class Requests extends StringRequest {
     private static final String LOGIN_REQUEST_URL = "http://bestbank.cba.pl/android/login.php";
     private static final String REGISTER_REQUEST_URL = "http://bestbank.cba.pl/android/register.php";
     private static final String TRANSACTION_REQUEST_URL = "http://bestbank.cba.pl/android/transaction.php";
+    private static final String HISTORY_REQUEST_URL = "http://bestbank.cba.pl/android/history.php";
     private Map<String, String> params;
 
     public Requests(String username, String password, Response.Listener<String> listener) {
@@ -34,12 +35,21 @@ public class Requests extends StringRequest {
         params.put("Password2", confirmPassword);
     }
 
-    public Requests(String payerAccountNumber, String recipientAccountNumber, String amount, String identityNumber, Response.Listener<String> listener) {
+    public Requests(String payerAccountNumber, String recipientAccountNumber, String amount, String identityNumber, String firstName, String lastName, String toc, Response.Listener<String> listener) {
         super(Method.POST, TRANSACTION_REQUEST_URL, listener, null);
         params = new HashMap<>();
         params.put("PayerAccountNumber", payerAccountNumber);
         params.put("RecipientAccountNumber", recipientAccountNumber);
         params.put("Amount", amount);
+        params.put("IdentityNumber", identityNumber);
+        params.put("LastName", lastName);
+        params.put("FirstName", firstName);
+        params.put("Title", toc);
+    }
+
+    public Requests(String identityNumber, Response.Listener<String> listener) {
+        super(Method.POST, HISTORY_REQUEST_URL, listener, null);
+        params = new HashMap<>();
         params.put("IdentityNumber", identityNumber);
     }
 

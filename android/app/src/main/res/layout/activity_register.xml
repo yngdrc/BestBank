@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:background="@drawable/gradient_main"
+    android:background="@drawable/bestbank_app_bg"
     tools:context="com.bestbank.RegisterActivity">
 
     <LinearLayout
@@ -38,9 +38,10 @@
             android:inputType="numberSigned"
             android:id="@+id/identityNumber_reg"
             android:hint="@string/identity_number"
-            android:textColor="#cacaca"
-            android:textColorHint="#cacaca"
-            android:background="@drawable/buttons_main"
+            android:textColor="#000000"
+            android:textColorHint="#666666"
+            android:background="@drawable/buttons_main_white"
+            android:textCursorDrawable="@null"
             android:layout_marginTop="10dp"
             android:textSize="14sp" />
 
@@ -53,9 +54,10 @@
             android:fontFamily="sans-serif"
             android:id="@+id/email_reg"
             android:hint="@string/email"
-            android:textColor="#cacaca"
-            android:textColorHint="#cacaca"
-            android:background="@drawable/buttons_main"
+            android:textColor="#000000"
+            android:textColorHint="#666666"
+            android:background="@drawable/buttons_main_white"
+            android:textCursorDrawable="@null"
             android:layout_marginTop="10dp"
             android:textSize="14sp"/>
 
@@ -68,9 +70,10 @@
             android:fontFamily="sans-serif"
             android:id="@+id/firstName_reg"
             android:hint="@string/first_name"
-            android:textColor="#cacaca"
-            android:textColorHint="#cacaca"
-            android:background="@drawable/buttons_main"
+            android:textColor="#000000"
+            android:textColorHint="#666666"
+            android:background="@drawable/buttons_main_white"
+            android:textCursorDrawable="@null"
             android:layout_marginTop="10dp"
             android:textSize="14sp" />
 
@@ -83,9 +86,10 @@
             android:fontFamily="sans-serif"
             android:id="@+id/lastName_reg"
             android:hint="@string/last_name"
-            android:textColor="#cacaca"
-            android:textColorHint="#cacaca"
-            android:background="@drawable/buttons_main"
+            android:textColor="#000000"
+            android:textColorHint="#666666"
+            android:background="@drawable/buttons_main_white"
+            android:textCursorDrawable="@null"
             android:layout_marginTop="10dp"
             android:textSize="14sp" />
 
@@ -98,9 +102,10 @@
             android:fontFamily="sans-serif"
             android:id="@+id/birthDate_reg"
             android:hint="@string/birth_date"
-            android:textColor="#cacaca"
-            android:textColorHint="#cacaca"
-            android:background="@drawable/buttons_main"
+            android:textColor="#000000"
+            android:textColorHint="#666666"
+            android:background="@drawable/buttons_main_white"
+            android:textCursorDrawable="@null"
             android:layout_marginTop="10dp"
             android:textSize="14sp" />
 
@@ -113,9 +118,10 @@
             android:fontFamily="sans-serif"
             android:id="@+id/areaCode_reg"
             android:hint="@string/area_code"
-            android:textColor="#cacaca"
-            android:textColorHint="#cacaca"
-            android:background="@drawable/buttons_main"
+            android:textColor="#000000"
+            android:textColorHint="#666666"
+            android:background="@drawable/buttons_main_white"
+            android:textCursorDrawable="@null"
             android:layout_marginTop="10dp"
             android:textSize="14sp" />
 
@@ -128,9 +134,10 @@
             android:fontFamily="sans-serif"
             android:id="@+id/phoneNumber_reg"
             android:hint="@string/phone_number"
-            android:textColor="#cacaca"
-            android:textColorHint="#cacaca"
-            android:background="@drawable/buttons_main"
+            android:textColor="#000000"
+            android:textColorHint="#666666"
+            android:background="@drawable/buttons_main_white"
+            android:textCursorDrawable="@null"
             android:layout_marginTop="10dp"
             android:textSize="14sp" />
 
@@ -139,7 +146,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:fontFamily="sans-serif"
+            android:background="@drawable/toc_left"
             android:layout_marginTop="10dp"
+            android:id="@+id/tocRegister"
             android:textSize="14sp"
             android:gravity="center"
             android:weightSum="2">
@@ -148,7 +157,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
-                android:background="@drawable/toc_button"
+                android:background="#00FFFFFF"
+                android:onClick="setToc"
                 android:text="@string/mr"
                 android:layout_weight="1"/>
 
@@ -156,7 +166,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
-                android:background="@drawable/toc_button"
+                android:background="#00FFFFFF"
+                android:onClick="setToc"
                 android:text="@string/mrs"
                 android:layout_weight="1"/>
 
@@ -171,9 +182,10 @@
             android:fontFamily="sans-serif"
             android:id="@+id/password_reg"
             android:hint="@string/password"
-            android:textColor="#cacaca"
-            android:textColorHint="#cacaca"
-            android:background="@drawable/buttons_main"
+            android:textColor="#000000"
+            android:textColorHint="#666666"
+            android:background="@drawable/buttons_main_white"
+            android:textCursorDrawable="@null"
             android:layout_marginTop="10dp"
             android:textSize="14sp" />
 
@@ -186,9 +198,10 @@
             android:fontFamily="sans-serif"
             android:id="@+id/confirmPassword_reg"
             android:hint="@string/confirm_password"
-            android:textColor="#cacaca"
-            android:textColorHint="#cacaca"
-            android:background="@drawable/buttons_main"
+            android:textColor="#000000"
+            android:textColorHint="#666666"
+            android:background="@drawable/buttons_main_white"
+            android:textCursorDrawable="@null"
             android:layout_marginTop="10dp"
             android:textSize="14sp" />
 

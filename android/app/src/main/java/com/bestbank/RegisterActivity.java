@@ -30,6 +30,18 @@ import org.json.JSONObject;
 public class RegisterActivity extends Activity {
 
     LinearLayout.LayoutParams params;
+    String toc = "Mr.";
+
+    public void setToc(View v) {
+        TextView tv = (TextView) v;
+        toc = tv.getText().toString();
+        LinearLayout tocLayout = findViewById(R.id.tocRegister);
+        if ((toc.equals("Mr."))) {
+            tocLayout.setBackground(getDrawable(R.drawable.toc_left));
+        } else {
+            tocLayout.setBackground(getDrawable(R.drawable.toc_right));
+        }
+    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

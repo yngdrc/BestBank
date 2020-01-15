@@ -7,4 +7,5 @@
     <color name="buttonsText">#c9c9c9</color>
     <color name="colorDark">#121212</color>
     <color name="loginButton">#D81F26</color>
+    <color name="snackbarGreen">#1FD822</color>
 </resources>

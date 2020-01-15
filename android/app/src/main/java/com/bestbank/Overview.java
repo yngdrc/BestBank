@@ -1,6 +1,9 @@
 package com.bestbank;
 
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.LayerDrawable;
@@ -19,9 +22,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.text.DecimalFormat;
 
 import androidx.fragment.app.Fragment;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,8 +88,8 @@ public class Overview extends Fragment {
 
                 for (int x = 0; x<accounts; x++) {
                     String balance = prefs.getString(username+"balance"+x, "");
-                    String accountNumber = prefs.getString(username+"accountNumber"+x, "");
-                    Log.d("acc2", accountNumber);
+                    final String accountNumber = prefs.getString(username+"accountNumber"+x, "");
+                    //Log.d("acc2", accountNumber);
                     final String accountType = prefs.getString(username+"accountType"+x, "");
                     final String accountName = prefs.getString(username+"accountName"+x, "");
 
@@ -154,14 +162,15 @@ public class Overview extends Fragment {
                     linearLayout.addView(overview_accountsContainer);
                     linearLayout.addView(space2);
 
-//                    overview_accountsContainer.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            tv_accountName.setText(getResources().getString(R.string.account_name) + " " + accountName);
-//                            tv_accountType.setText(getResources().getString(R.string.account_type) + " " + accountType);
-//                            tv_accountNumber.setText(getResources().getString(R.string.account_number) + " " + accountNumber);
-//                        }
-//                    });
+                    overview_accountsContainer.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(CLIPBOARD_SERVICE);
+                            ClipData clip = ClipData.newPlainText("Account number", accountNumber);
+                            clipboard.setPrimaryClip(clip);
+                            MainActivity.showSnackbar();
+                        }
+                    });
                 }
                 ViewTreeObserver obs = linearLayout.getViewTreeObserver();
 
@@ -173,22 +182,6 @@ public class Overview extends Fragment {
             }
 
         });
-
-//        horizontalScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-//            @Override
-//            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-//                    Log.d("oldx: ", String.valueOf(oldScrollX));
-//                    Log.d("newx", String.valueOf(scrollX));
-//                    if (scrollX == (1+swipe_count)*width && swipe_count < 3) {
-//                        swipe_count++;
-//                        horizontalScrollView.setScrollX(width*swipe_count);
-//                    } else if (scrollX == (1+swipe_count*width) && swipe_count > 0) {
-//                        swipe_count--;
-//                        horizontalScrollView.setScrollX(width*swipe_count);
-//                    }
-//                Log.d("swipe_count", String.valueOf(swipe_count));
-//            }
-//        });
 
         //TextView tv_lsl = root.findViewById(R.id.overview_lastSuccessfulLogin);
         //tv_lsl.setText(getResources().getString(R.string.lastSuccessfulLogin));

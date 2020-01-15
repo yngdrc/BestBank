@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/gradient_main"
+    android:background="@drawable/bestbank_app_bg"
     tools:context="com.bestbank.LoginActivity">
 
     <LinearLayout
@@ -28,9 +28,10 @@
         android:ems="10"
         android:id="@+id/etUsername"
         android:hint="Username"
-        android:textColor="#cacaca"
-        android:textColorHint="#cacaca"
-        android:background="@drawable/buttons_main"
+        android:textCursorDrawable="@null"
+        android:textColor="#000000"
+        android:textColorHint="#666666"
+        android:background="@drawable/buttons_main_white"
         android:layout_centerInParent="true"
         android:layout_above="@+id/etPassword"
         android:textSize="14sp" />
@@ -44,9 +45,10 @@
         android:fontFamily="sans-serif"
         android:id="@+id/etPassword"
         android:hint="Password"
-        android:textColor="#cacaca"
-        android:textColorHint="#cacaca"
-        android:background="@drawable/buttons_main"
+        android:textCursorDrawable="@null"
+        android:textColor="#000000"
+        android:textColorHint="#666666"
+        android:background="@drawable/buttons_main_white"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         android:textSize="14sp" />

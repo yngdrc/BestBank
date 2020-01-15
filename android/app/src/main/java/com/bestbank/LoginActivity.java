@@ -29,9 +29,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class LoginActivity extends Activity {
 
     LinearLayout.LayoutParams params;
+    Set<String> arrayList;
 
 
     @Override
@@ -99,6 +105,8 @@ public class LoginActivity extends Activity {
                         try {
                             JSONObject jsonResponse = new JSONObject(response);
                             Log.d("response", response);
+                            //arrayList = new ArrayList<>();
+                            arrayList = new HashSet<>();
                             boolean success = jsonResponse.getBoolean("success");
 
                             if (success) {
@@ -109,12 +117,12 @@ public class LoginActivity extends Activity {
                                     JSONObject jsonObject = new JSONObject(accountDetails);
                                     int balance = jsonObject.getInt("balance"+x);
                                     String accountNumber = jsonObject.getString("accountNumber"+x);
-                                    Log.d("acc", accountNumber);
                                     String accountType = jsonObject.getString("accountType"+x);
                                     String accountName = jsonObject.getString("accountName"+x);
                                     String identityNumber = jsonObject.getString("identityNumber");
                                     edit.putString(username+"balance"+x, String.valueOf(balance));
                                     edit.putString(username+"accountNumber"+x, accountNumber);
+                                    arrayList.add(accountNumber);
                                     edit.putString(username+"accountType"+x, accountType);
                                     edit.putString(username+"accountName"+x, accountName);
                                     edit.putString(username+"identityNumber", identityNumber);
@@ -122,7 +130,9 @@ public class LoginActivity extends Activity {
 
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 edit.putInt("accounts", accounts);
+                                edit.putStringSet("arr", arrayList);
                                 edit.commit();
+                                Log.d("arr", String.valueOf(prefs.getStringSet("arr", null)));
                                 LoginActivity.this.startActivity(intent);
                             } else {
                                 Snackbar snackbar = Snackbar.make(root, "Couldn't sign in", Snackbar.LENGTH_LONG);

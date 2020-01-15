@@ -2,6 +2,8 @@ package com.bestbank;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +14,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.transition.Transition;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +35,8 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                             msg = "Failed";
                         }
                         Log.d("msg", msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -106,13 +112,17 @@ public class MainActivity extends AppCompatActivity {
                         String msg = token;
                         edit.putString("token", token);
                         edit.commit();
+                        ClipboardManager clipboard = (ClipboardManager) getApplicationContext().getSystemService(CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("token", token);
+                        clipboard.setPrimaryClip(clip);
                         Log.d("TAG", msg);
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         // [END retrieve_current_token]
 
         FloatingActionButton fab = findViewById(R.id.floating_action_button);
+        rootView = fab;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,5 +133,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+    }
+
+
+    public static void showSnackbar() {
+        Snackbar snackbar = Snackbar.make(rootView, "Account number copied to clipboard", Snackbar.LENGTH_LONG);
+        snackbar.getView().setBackgroundColor(Color.parseColor("#1FD822"));
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setAction("Action", null).show();
     }
 }

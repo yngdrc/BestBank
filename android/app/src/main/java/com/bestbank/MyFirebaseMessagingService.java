@@ -14,12 +14,15 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Arrays;
+
 import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
+    public static boolean notifications = true;
 
     /**
      * Called when message is received.
@@ -66,7 +69,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification().getBody());
+            if (notifications) {
+                sendNotification(remoteMessage.getNotification().getBody());
+            }
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -139,14 +144,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String username = prefs.getString("username", "");
         String payer = "";
 
+        final StringBuilder sb = new StringBuilder(body.length);
+        sb.append(Arrays.toString(body));
+
         String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         //.setSmallIcon(R.drawable.ic_stat_ic_notification)
                         .setContentTitle("BestBank")
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentText("You received $" + body[0] + " from " + body[1])
+                        .setSmallIcon(R.drawable.bestbank_notification)
+                        .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
@@ -163,6 +171,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        //if(notifications) {
+            notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        //}
     }
 }
